@@ -1,6 +1,6 @@
 # 引擎
 
-seia 支持 8 个后端，全部经由各自官方的 HTTP API（在没有官方 API 时，则进行轻量 HTML
+seia 支持 9 个后端，全部经由各自官方的 HTTP API（在没有官方 API 时，则进行轻量 HTML
 抓取）。seia 不内置任何无头浏览器 —— 它是一个纯粹的 HTTP 客户端，因此每个引擎在 CLI
 与库中都通过同一个 `Engine` 枚举使用。
 
@@ -11,7 +11,7 @@ seia 支持 8 个后端，全部经由各自官方的 HTTP API（在没有官方
 
 | 模式 | 工作方式 | 引擎 |
 | --- | --- | --- |
-| **API** | 调用搜索服务商的 HTTP API 并解析 JSON。 | Tavily、SearXNG、Wikipedia、Bing、Brave、智谱、博查 |
+| **API** | 调用搜索服务商的 HTTP API 并解析 JSON。 | Tavily、SearXNG、Wikipedia、Bing、Brave、智谱、博查、秘塔 |
 | **爬取** | 抓取轻量 HTML 结果页并提取命中。 | DuckDuckGo |
 
 ## 引擎矩阵
@@ -33,6 +33,7 @@ seia 支持 8 个后端，全部经由各自官方的 HTTP API（在没有官方
 | --- | --- | --- | --- | --- |
 | 智谱（Zhipu / BigModel） | `Zhipu` | API | `ZHIPU_API_KEY` | ✅ |
 | 博查（Bocha） | `Bocha` | API | `BOCHA_API_KEY` | ✅ |
+| 秘塔（Metaso） | `Metaso` | API | `METASO_API_KEY` | ✅ |
 
 > 智谱的 Web Search API 可经由若干底层引擎之一路由 —— 智谱基础版
 > （`search_std`，默认）、智谱高阶版（`search_pro`）、搜狗
@@ -41,6 +42,9 @@ seia 支持 8 个后端，全部经由各自官方的 HTTP API（在没有官方
 
 > 博查对每个页面会同时返回简短的 `snippet` 和较长的、由 LLM 生成的 `summary`；seia
 > 取其中较长者作为结果的 `snippet`。
+
+> 秘塔的搜索范围默认为 `webpage`；可通过 `METASO_SCOPE` 环境变量覆盖。其响应信封会以
+> 防御性方式解析 —— 缺失或格式异常的字段不会导致整体失败。
 
 ## 选择引擎
 

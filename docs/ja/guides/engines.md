@@ -1,6 +1,6 @@
 # エンジン
 
-seia は 8 つのバックエンドをサポートしています。すべて公式の HTTP API（API が存在しない場合は
+seia は 9 つのバックエンドをサポートしています。すべて公式の HTTP API（API が存在しない場合は
 軽量な HTML スクレイプ）経由でアクセスします。ヘッドレスブラウザは一切存在せず、seia は
 純粋な HTTP クライアントであるため、どのエンジンも CLI とライブラリの双方で同じ `Engine`
 列挙型を通じて動作します。
@@ -12,7 +12,7 @@ seia は 8 つのバックエンドをサポートしています。すべて公
 
 | モード | 仕組み | エンジン |
 | --- | --- | --- |
-| **API** | 検索プロバイダの HTTP API を呼び出して JSON を解析します。 | Tavily、SearXNG、Wikipedia、Bing、Brave、智谱、博查 |
+| **API** | 検索プロバイダの HTTP API を呼び出して JSON を解析します。 | Tavily、SearXNG、Wikipedia、Bing、Brave、智谱、博查、秘塔 |
 | **スクレイプ** | HTML の検索結果ページを取得し、ヒットを抽出します。 | DuckDuckGo |
 
 ## エンジンマトリクス
@@ -34,6 +34,7 @@ seia は 8 つのバックエンドをサポートしています。すべて公
 | --- | --- | --- | --- | --- |
 | 智谱 (Zhipu / BigModel) | `Zhipu` | API | `ZHIPU_API_KEY` | ✅ |
 | 博查 (Bocha) | `Bocha` | API | `BOCHA_API_KEY` | ✅ |
+| 秘塔 (Metaso) | `Metaso` | API | `METASO_API_KEY` | ✅ |
 
 > 智谱の Web Search API は複数のバッキングエンジンを経由できます —— 智谱基础版
 > （`search_std`、デフォルト）、智谱高阶版（`search_pro`）、搜狗（`search_pro_sogou`）、
@@ -41,6 +42,10 @@ seia は 8 つのバックエンドをサポートしています。すべて公
 
 > 博查はページごとに短い `snippet` と、より長い LLM 生成の `summary` を返します。seia は
 > 長い方を結果の `snippet` として採用します。
+
+> 秘塔の検索スコープは既定で `webpage` です。別のスコープを使うには `METASO_SCOPE`
+> 環境変数で上書きしてください。また、応答エンベロプは防御的に解析され、フィールドの欠落や
+> 予期しない形状に対して耐性を持ちます。
 
 ## エンジンの選択
 

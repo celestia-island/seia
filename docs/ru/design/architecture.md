@@ -20,7 +20,8 @@ src/
 │   ├── bing.rs         API (JSON, ключ)
 │   ├── brave.rs        API (JSON, ключ)
 │   ├── zhipu.rs        API (JSON, ключ — 智谱 Web Search)
-│   └── bocha.rs        API (JSON, ключ — 博查 Web Search)
+│   ├── bocha.rs        API (JSON, ключ — 博查 Web Search)
+│   └── metaso.rs       API (JSON, ключ — 秘塔 Web Search)
 ├── client.rs       SearchClient + SearchOptions
 ├── extractor.rs    загрузчик полного содержимого страницы (для --fetch)
 └── result.rs       SearchResult / SearchItem / SearchMode

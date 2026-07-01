@@ -19,7 +19,8 @@ src/
 │   ├── bing.rs         API (JSON، بمفتاح)
 │   ├── brave.rs        API (JSON، بمفتاح)
 │   ├── zhipu.rs        API (JSON، بمفتاح — 智谱 Web Search)
-│   └── bocha.rs        API (JSON، بمفتاح — 博查 Web Search)
+│   ├── bocha.rs        API (JSON، بمفتاح — 博查 Web Search)
+│   └── metaso.rs       API (JSON، بمفتاح — 秘塔 Web Search)
 ├── client.rs       SearchClient + SearchOptions
 ├── extractor.rs    جالب محتوى الصفحة الكامل (لِـ --fetch)
 └── result.rs       SearchResult / SearchItem / SearchMode

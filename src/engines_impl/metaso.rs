@@ -171,10 +171,7 @@ fn parse_result(obj: &serde_json::Value) -> Option<SearchItem> {
     })
 }
 
-fn first_str(
-    map: &serde_json::Map<String, serde_json::Value>,
-    keys: &[&str],
-) -> Option<String> {
+fn first_str(map: &serde_json::Map<String, serde_json::Value>, keys: &[&str]) -> Option<String> {
     for k in keys {
         if let Some(serde_json::Value::String(s)) = map.get(*k) {
             if !s.is_empty() {

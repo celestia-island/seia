@@ -19,7 +19,8 @@ src/
 │   ├── bing.rs         API（JSON、キー必要）
 │   ├── brave.rs        API（JSON、キー必要）
 │   ├── zhipu.rs        API（JSON、キー必要 —— 智谱 Web Search）
-│   └── bocha.rs        API（JSON、キー必要 —— 博查 Web Search）
+│   ├── bocha.rs        API（JSON、キー必要 —— 博查 Web Search）
+│   └── metaso.rs       API（JSON、キー必要 —— 秘塔 Web Search）
 ├── client.rs       SearchClient + SearchOptions
 ├── extractor.rs    ページ全文取得（--fetch 用）
 └── result.rs       SearchResult / SearchItem / SearchMode
