@@ -4,12 +4,14 @@
 
 <div align="center">
 
-<strong>一次查询，所有搜索引擎。</strong>
+<strong>阅览互联网上的知识</strong>
 
-多引擎 Web 搜索库与 CLI，Rust 实现。免费引擎开箱即用。
+多引擎 Web 搜索库与 CLI，Rust 实现。免费引擎开箱即用
 
 [![License: SySL-1.0](https://img.shields.io/badge/License-SySL--1.0-blue.svg)](../../LICENSE)
-[![CI](https://github.com/celestia-island/seia/actions/workflows/checks.yml/badge.svg)](https://github.com/celestia-island/seia/actions)
+[![Crates.io](https://img.shields.io/crates/v/seia)](https://docs.rs/seia)
+[![CI](https://img.shields.io/github/actions/workflow/status/celestia-island/seia/checks.yml)](https://github.com/celestia-island/seia/actions/workflows/checks.yml)
+[![Docs](https://img.shields.io/badge/docs-seia.docs.celestia.world-blue)](https://seia.docs.celestia.world)
 
 [English](../en/README.md) · **简体中文** ·
 [繁體中文](../zht/README.md) · [日本語](../ja/README.md) ·
