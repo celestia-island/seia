@@ -1,0 +1,17 @@
+[book]
+title = "seia Documentation"
+description = "Universal search engine abstraction — multi-backend web search with API and headless browser modes"
+authors = ["celestia-island"]
+language = "en"
+src = "."
+
+[build]
+build-dir = "../../target/docs/en"
+
+[output.html]
+default-theme = "light"
+preferred-dark-theme = "ayu"
+git-repository-url = "https://github.com/celestia-island/seia"
+edit-url-template = "https://github.com/celestia-island/seia/edit/dev/docs/en/{path}"
+additional-js = ["../theme/lang-switcher.js"]
+additional-css = ["../theme/lang-switcher.css"]

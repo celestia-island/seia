@@ -12,7 +12,7 @@ use crate::result::{SearchItem, SearchMode};
 pub async fn search(
     http: &reqwest::Client,
     query: &str,
-    opts: &SearchOptions,
+    _opts: &SearchOptions,
 ) -> Result<EngineOutput> {
     let url = format!(
         "https://html.duckduckgo.com/html/?q={}",
@@ -52,7 +52,10 @@ fn parse_ddg_html(html: &str) -> Vec<SearchItem> {
 
             // Try to find snippet — use the result__snippet class near this link
             let snippet = snippet_sel.as_ref().and_then(|snip_sel| {
-                document.select(snip_sel).nth(i).map(|s| s.text().collect::<String>().trim().to_string())
+                document
+                    .select(snip_sel)
+                    .nth(i)
+                    .map(|s| s.text().collect::<String>().trim().to_string())
             });
 
             items.push(SearchItem {
@@ -72,11 +75,9 @@ fn extract_ddg_url(raw: &str) -> String {
     if let Some(start) = raw.find("uddg=") {
         let after = &raw[start + 5..];
         if let Some(end) = after.find('&') {
-            return urlencoding::decode(&after[..end])
-                .unwrap_or_else(|_| after[..end].to_string());
+            return urlencoding::decode(&after[..end]).unwrap_or_else(|_| after[..end].to_string());
         }
-        return urlencoding::decode(after)
-            .unwrap_or_else(|_| after.to_string());
+        return urlencoding::decode(after).unwrap_or_else(|_| after.to_string());
     }
     if raw.starts_with("http") {
         raw.to_string()
@@ -125,7 +126,6 @@ mod urlencoding {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use scraper::{Html, Selector};
 
     #[test]
     fn test_ddg_html_parsing() {

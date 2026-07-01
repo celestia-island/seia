@@ -1,8 +1,8 @@
 //! Engine implementations — one module per backend.
 
 pub mod duckduckgo;
-pub mod tavily;
 pub mod searxng;
+pub mod tavily;
 pub mod wikipedia;
 
 use crate::result::SearchItem;

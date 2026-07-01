@@ -3,19 +3,19 @@
 //! Multi-backend web search library and CLI. Supports both API-based and
 //! browser-scraping search modes through a unified interface.
 
+pub mod browser;
+pub mod client;
 pub mod engines;
 pub mod engines_impl;
-pub mod client;
-pub mod browser;
-pub mod profiles;
 pub mod extractor;
+pub mod profiles;
 pub mod result;
 
-pub use client::{SearchClient, SearchOptions};
-pub use result::{SearchResult, SearchItem, SearchMode};
-pub use engines::Engine;
 pub use browser::BrowserClient;
+pub use client::{SearchClient, SearchOptions};
+pub use engines::Engine;
 pub use profiles::{SearchProfile, get_profile};
+pub use result::{SearchItem, SearchMode, SearchResult};
 
 /// Embedded browser server (requires `embedded-browser` feature).
 /// Spawns tairitsu's debug server in-process so BrowserClient can connect
@@ -51,5 +51,5 @@ pub mod embedded {
 }
 
 pub mod prelude {
-    pub use crate::{SearchClient, Engine, SearchResult, SearchItem, SearchMode};
+    pub use crate::{Engine, SearchClient, SearchItem, SearchMode, SearchResult};
 }

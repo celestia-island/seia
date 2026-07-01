@@ -31,25 +31,25 @@ enum Command {
         #[arg(short, long, default_value = "10")]
         limit: usize,
 
-    /// Browser mode: search via tairitsu headless browser.
-    /// Use with engines that need a real browser (google, baidu, bing_web, yandex).
-    /// Requires either an external tairitsu daemon or the `embedded-browser` feature.
-    #[arg(long)]
-    browser: bool,
+        /// Browser mode: search via tairitsu headless browser.
+        /// Use with engines that need a real browser (google, baidu, bing_web, yandex).
+        /// Requires either an external tairitsu daemon or the `embedded-browser` feature.
+        #[arg(long)]
+        browser: bool,
 
-    /// tairitsu debug server endpoint (default: http://127.0.0.1:3001)
-    #[arg(long, default_value = "http://127.0.0.1:3001")]
-    tairitsu: String,
+        /// tairitsu debug server endpoint (default: http://127.0.0.1:3001)
+        #[arg(long, default_value = "http://127.0.0.1:3001")]
+        tairitsu: String,
 
-    /// Start embedded tairitsu server (requires `embedded-browser` feature).
-    /// If set, ignores --tairitsu and spawns in-process.
-    #[cfg(feature = "embedded-browser")]
-    #[arg(long)]
-    embedded: bool,
+        /// Start embedded tairitsu server (requires `embedded-browser` feature).
+        /// If set, ignores --tairitsu and spawns in-process.
+        #[cfg(feature = "embedded-browser")]
+        #[arg(long)]
+        embedded: bool,
 
-    /// Proxy server for the embedded browser (e.g. http://localhost:7890)
-    #[arg(long)]
-    proxy: Option<String>,
+        /// Proxy server for the embedded browser (e.g. http://localhost:7890)
+        #[arg(long)]
+        proxy: Option<String>,
     },
 
     /// List available engines
@@ -65,9 +65,18 @@ async fn main() -> anyhow::Result<()> {
     let cli = Cli::parse();
 
     match cli.cmd {
-        Command::Search { query, engine, json, fetch, limit, browser, tairitsu,
-            #[cfg(feature = "embedded-browser")] embedded,
-            proxy } => {
+        Command::Search {
+            query,
+            engine,
+            json,
+            fetch,
+            limit,
+            browser,
+            tairitsu,
+            #[cfg(feature = "embedded-browser")]
+            embedded,
+            proxy,
+        } => {
             if browser {
                 // Determine endpoint
                 #[cfg(feature = "embedded-browser")]
@@ -82,7 +91,10 @@ async fn main() -> anyhow::Result<()> {
                     tairitsu.clone()
                 };
                 #[cfg(not(feature = "embedded-browser"))]
-                let endpoint = tairitsu.clone();
+                let endpoint = {
+                    let _ = &proxy;
+                    tairitsu.clone()
+                };
 
                 // Select profile
                 let profile = match engine.as_str() {
@@ -107,8 +119,12 @@ async fn main() -> anyhow::Result<()> {
                 if json {
                     println!("{}", serde_json::to_string_pretty(&result)?);
                 } else {
-                    println!("Engine: {} (browser) | {} results | {}ms\n",
-                        result.engine, result.items.len(), result.elapsed_ms);
+                    println!(
+                        "Engine: {} (browser) | {} results | {}ms\n",
+                        result.engine,
+                        result.items.len(),
+                        result.elapsed_ms
+                    );
                     for (i, item) in result.items.iter().enumerate() {
                         println!("{}. {}", i + 1, item.title);
                         println!("   {}", item.url);
@@ -129,16 +145,16 @@ async fn main() -> anyhow::Result<()> {
                 searxng_url: None,
             };
 
-            let result = client
-                .search_with_options(&query, engine, opts)
-                .await?;
+            let result = client.search_with_options(&query, engine, opts).await?;
 
             if json {
                 println!("{}", serde_json::to_string_pretty(&result)?);
             } else {
                 println!(
                     "Engine: {} | {} results | {}ms\n",
-                    result.engine, result.items.len(), result.elapsed_ms
+                    result.engine,
+                    result.items.len(),
+                    result.elapsed_ms
                 );
                 for (i, item) in result.items.iter().enumerate() {
                     println!("{}. {}", i + 1, item.title);

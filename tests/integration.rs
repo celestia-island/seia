@@ -51,10 +51,14 @@ mod tests {
 
         assert!(!result.items.is_empty());
         let has_relevant = result.items.iter().any(|item| {
-            let text = format!("{} {}", item.title, item.snippet.as_deref().unwrap_or("")).to_lowercase();
+            let text =
+                format!("{} {}", item.title, item.snippet.as_deref().unwrap_or("")).to_lowercase();
             text.contains("torus") || text.contains("fundamental")
         });
-        assert!(has_relevant, "should have results about torus or fundamental group");
+        assert!(
+            has_relevant,
+            "should have results about torus or fundamental group"
+        );
     }
 
     /// Engine enumeration and properties.
@@ -133,7 +137,10 @@ mod tests {
         let result = client.search("test", Engine::Tavily).await;
         assert!(result.is_err(), "should fail without API key");
         let err = result.unwrap_err().to_string();
-        assert!(err.contains("TAVILY_API_KEY"), "error should mention the key name");
+        assert!(
+            err.contains("TAVILY_API_KEY"),
+            "error should mention the key name"
+        );
     }
 
     /// SearXNG engine: gracefully handles missing URL.

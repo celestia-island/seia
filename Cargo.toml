@@ -32,7 +32,9 @@ url = "^2"
 regex = "^1"
 scraper = "^0.22"
 tokio-stream = "^0.1"
-tairitsu-packager = { path = "../tairitsu/packages/packager", default-features = false, features = ["dev-server", "debug-browser"], optional = true }
+# Path overrides the local tairitsu checkout during development;
+# `version` is what crates.io resolves when publishing.
+tairitsu-packager = { version = "0.5", path = "../tairitsu/packages/packager", default-features = false, features = ["dev-server", "debug-browser"], optional = true }
 
 [features]
 default = []

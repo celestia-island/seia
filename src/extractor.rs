@@ -15,13 +15,17 @@ pub async fn fetch_content(http: &reqwest::Client, url: &str) -> Result<String> 
 fn extract_main_text(html: &str) -> String {
     let document = Html::parse_document(html);
 
-    // Remove script, style, nav, footer, header
-    let remove_sel = Selector::parse("script, style, nav, footer, header, aside, .ad, .ads, .sidebar").unwrap();
-
     // Try common content selectors
     let content_selectors = [
-        "article", "main", "[role='main']", ".post-content", ".article-content",
-        ".entry-content", "#content", ".content", "body",
+        "article",
+        "main",
+        "[role='main']",
+        ".post-content",
+        ".article-content",
+        ".entry-content",
+        "#content",
+        ".content",
+        "body",
     ];
 
     for sel_str in &content_selectors {

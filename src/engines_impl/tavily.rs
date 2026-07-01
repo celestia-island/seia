@@ -51,6 +51,7 @@ struct TavilyResponse {
     #[serde(default)]
     results: Vec<TavilyItem>,
     #[serde(default)]
+    #[allow(dead_code)]
     answer: Option<String>,
 }
 

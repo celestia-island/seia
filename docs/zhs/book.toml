@@ -1,0 +1,17 @@
+[book]
+title = "seia 文档"
+description = "通用搜索引擎抽象层 —— 多后端 Web 搜索，支持 API 模式与无头浏览器模式"
+authors = ["celestia-island"]
+language = "zh-CN"
+src = "."
+
+[build]
+build-dir = "../../target/docs/zhs"
+
+[output.html]
+default-theme = "light"
+preferred-dark-theme = "ayu"
+git-repository-url = "https://github.com/celestia-island/seia"
+edit-url-template = "https://github.com/celestia-island/seia/edit/dev/docs/zhs/{path}"
+additional-js = ["../theme/lang-switcher.js"]
+additional-css = ["../theme/lang-switcher.css"]

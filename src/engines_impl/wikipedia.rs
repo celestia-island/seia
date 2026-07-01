@@ -24,7 +24,10 @@ pub async fn search(
 
     let mut items = Vec::new();
     for hit in resp.query.search {
-        let url = format!("https://en.wikipedia.org/wiki/{}", hit.title.replace(' ', "_"));
+        let url = format!(
+            "https://en.wikipedia.org/wiki/{}",
+            hit.title.replace(' ', "_")
+        );
         items.push(SearchItem {
             title: hit.title,
             url,

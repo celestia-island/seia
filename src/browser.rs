@@ -7,7 +7,7 @@ use anyhow::{Result, anyhow};
 use std::time::Duration;
 
 use crate::profiles::SearchProfile;
-use crate::result::{SearchItem, SearchMode, SearchResult};
+use crate::result::{SearchItem, SearchResult};
 
 /// Client for a running tairitsu debug server.
 pub struct BrowserClient {
@@ -42,11 +42,7 @@ impl BrowserClient {
     }
 
     /// Search via browser: navigate → wait → extract results.
-    pub async fn search(
-        &self,
-        query: &str,
-        profile: &SearchProfile,
-    ) -> Result<SearchResult> {
+    pub async fn search(&self, query: &str, profile: &SearchProfile) -> Result<SearchResult> {
         let start = std::time::Instant::now();
 
         // Step 1: Navigate to search page
@@ -54,7 +50,8 @@ impl BrowserClient {
         self.navigate(&url).await?;
 
         // Step 2: Wait for results to render
-        self.wait_for_selector(profile.wait_selector, 10_000).await?;
+        self.wait_for_selector(profile.wait_selector, 10_000)
+            .await?;
 
         // Step 3: Extract results via JS
         let items = self.extract_results(profile).await?;
@@ -160,8 +157,16 @@ impl BrowserClient {
         let items = raw_items
             .iter()
             .map(|item| SearchItem {
-                title: item.get("title").and_then(|v| v.as_str()).unwrap_or("").to_string(),
-                url: item.get("url").and_then(|v| v.as_str()).unwrap_or("").to_string(),
+                title: item
+                    .get("title")
+                    .and_then(|v| v.as_str())
+                    .unwrap_or("")
+                    .to_string(),
+                url: item
+                    .get("url")
+                    .and_then(|v| v.as_str())
+                    .unwrap_or("")
+                    .to_string(),
                 snippet: item
                     .get("snippet")
                     .and_then(|v| v.as_str())
