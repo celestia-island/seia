@@ -6,12 +6,12 @@ language = "zh-CN"
 src = "."
 
 [build]
-build-dir = "../../target/docs/zh-hans"
+build-dir = "../../target/docs/zhs"
 
 [output.html]
 default-theme = "light"
 preferred-dark-theme = "ayu"
 git-repository-url = "https://github.com/celestia-island/seia"
-edit-url-template = "https://github.com/celestia-island/seia/edit/dev/docs/zh-hans/{path}"
+edit-url-template = "https://github.com/celestia-island/seia/edit/dev/docs/zhs/{path}"
 additional-js = ["../theme/lang-switcher.js"]
 additional-css = ["../theme/lang-switcher.css"]

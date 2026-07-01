@@ -1,8 +1,29 @@
-# seia
+<p align="center"><img src="docs/logo.webp" alt="seia" width="240" /></p>
 
-**One query, every search engine.**
+<h1 align="center">seia</h1>
 
-Multi-engine web search for Rust. Free engines work out of the box.
+<p align="center"><strong>One query, every search engine.</strong></p>
+
+<p align="center">
+  Multi-engine web search for Rust. Free engines work out of the box.
+</p>
+
+<p align="center">
+[![License: SySL-1.0](https://img.shields.io/badge/License-SySL--1.0-blue.svg)](./LICENSE)
+[![CI](https://github.com/celestia-island/seia/actions/workflows/checks.yml/badge.svg)](https://github.com/celestia-island/seia/actions)
+</p>
+
+<p align="center">
+<a href="./docs/en/README.md">English</a> ·
+<a href="./docs/zhs/README.md">简体中文</a> ·
+<a href="./docs/zht/README.md">繁體中文</a> ·
+<a href="./docs/ja/README.md">日本語</a> ·
+<a href="./docs/ko/README.md">한국어</a> ·
+<a href="./docs/fr/README.md">Français</a> ·
+<a href="./docs/es/README.md">Español</a> ·
+<a href="./docs/ru/README.md">Русский</a> ·
+<a href="./docs/ar/README.md">العربية</a>
+</p>
 
 ## Introduction
 
@@ -68,4 +89,4 @@ just test        # cargo test
 
 ## License
 
-SySL-1.0 (Synthetic Source License). See [LICENSE](../../LICENSE).
+SySL-1.0 (Synthetic Source License). See [LICENSE](./LICENSE).
