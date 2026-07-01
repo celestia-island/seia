@@ -49,7 +49,7 @@ HTTPS_PROXY=http://localhost:7890 seia search "hello world"
 use seia::{SearchClient, Engine};
 
 let client = SearchClient::new();
-let results = client.search("rust async", Engine::Duckduckgo).await?;
+let results = client.search("rust async", Engine::Wikipedia).await?;
 ```
 
 ## Desarrollo
@@ -61,32 +61,15 @@ just test        # cargo test
 
 ## Motores soportados
 
-Todos los motores pasan por su API HTTP oficial (o, donde no existe, por un raspado
-ligero del HTML). No se incluye ningún navegador sin interfaz: seia es un cliente
-HTTP puro.
-
-### Internacional
-
-| Motor | Sitio oficial | Modo | Autenticación | Cuota gratuita | Estado |
-|-------|-------------|------|---------------|---------------|--------|
-| DuckDuckGo | [duckduckgo.com](https://duckduckgo.com) | Raspado | Ninguno | ilimitado | ✅ |
-| Wikipedia | [wikipedia.org](https://www.wikipedia.org) | API | Ninguno | ilimitado | ✅ |
-| SearXNG | [searxng.org](https://searxng.org) | API | `SEARXNG_URL` | autoalojado | ✅ |
-| Tavily | [tavily.com](https://tavily.com) | API | `TAVILY_API_KEY` | 1 000/mes | ✅ |
-| Bing | [bing.com](https://www.bing.com) | API | `BING_SEARCH_API_KEY` | 1 000/mes | ✅ |
-| Brave | [brave.com/search](https://brave.com/search) | API | `BRAVE_SEARCH_API_KEY` | 2 000/mes | ✅ |
-
-### Nacional (China)
-
-| Motor | Sitio oficial | Modo | Autenticación | Estado |
-|-------|-------------|------|---------------|--------|
-| 智谱 (Zhipu) | [bigmodel.cn](https://bigmodel.cn) | API | `ZHIPU_API_KEY` | ✅ |
-| 博查 (Bocha) | [open.bochaai.com](https://open.bochaai.com) | API | `BOCHA_API_KEY` | ✅ |
-
-> 智谱 enruta a través de uno de varios motores de respaldo (智谱基础版/高阶版, 搜狗,
-> 夸克). Elige uno con la variable de entorno `ZHIPU_SEARCH_ENGINE`
-> (`search_std` por defecto; también `search_pro`, `search_pro_sogou`,
-> `search_pro_quark`).
+| Motor | Autenticación | Estado |
+|-------|---------------|--------|
+| [Wikipedia](https://www.mediawiki.org/wiki/API:Search) | Ninguno | ✅ |
+| [SearXNG](https://docs.searxng.org/) | `SEARXNG_URL` | ✅ |
+| [Tavily](https://docs.tavily.com/) | `TAVILY_API_KEY` | ✅ |
+| [Bing](https://learn.microsoft.com/en-us/bing/search-apis/bing-web-search/) | `BING_SEARCH_API_KEY` | ✅ |
+| [Brave](https://api.search.brave.com/app/documentation) | `BRAVE_SEARCH_API_KEY` | ✅ |
+| [智谱 (Zhipu)](https://docs.bigmodel.cn/cn/guide/tools/web-search) | `ZHIPU_API_KEY` | ✅ |
+| [博查 (Bocha)](https://open.bochaai.com/docs) | `BOCHA_API_KEY` | ✅ |
 
 ## Licencia
 

@@ -48,7 +48,7 @@ HTTPS_PROXY=http://localhost:7890 seia search "hello world"
 use seia::{SearchClient, Engine};
 
 let client = SearchClient::new();
-let results = client.search("rust async", Engine::Duckduckgo).await?;
+let results = client.search("rust async", Engine::Wikipedia).await?;
 ```
 
 ## التطوير
@@ -60,30 +60,15 @@ just test        # cargo test
 
 ## المحركات المدعومة
 
-تمرّ جميع المحركات عبر واجهة HTTP API الرسمية الخاصة بها (أو، حيث لا توجد واجهة، عبر
-كشط HTML خفيف). لا يُضمَّن أي متصفح بلا واجهة — seia هو عميل HTTP نقي.
-
-### دولي
-
-| المحرك | الموقع الرسمي | الوضع | المصادقة | الحد المجاني | الحالة |
-|--------|-------------|------|---------|-----------|--------|
-| DuckDuckGo | [duckduckgo.com](https://duckduckgo.com) | كشط | بدون | غير محدود | ✅ |
-| Wikipedia | [wikipedia.org](https://www.wikipedia.org) | API | بدون | غير محدود | ✅ |
-| SearXNG | [searxng.org](https://searxng.org) | API | `SEARXNG_URL` | استضافة ذاتية | ✅ |
-| Tavily | [tavily.com](https://tavily.com) | API | `TAVILY_API_KEY` | 1 000/شهر | ✅ |
-| Bing | [bing.com](https://www.bing.com) | API | `BING_SEARCH_API_KEY` | 1 000/شهر | ✅ |
-| Brave | [brave.com/search](https://brave.com/search) | API | `BRAVE_SEARCH_API_KEY` | 2 000/شهر | ✅ |
-
-### محلي (الصين)
-
-| المحرك | الموقع الرسمي | الوضع | المصادقة | الحالة |
-|--------|-------------|------|---------|--------|
-| 智谱 (Zhipu) | [bigmodel.cn](https://bigmodel.cn) | API | `ZHIPU_API_KEY` | ✅ |
-| 博查 (Bocha) | [open.bochaai.com](https://open.bochaai.com) | API | `BOCHA_API_KEY` | ✅ |
-
-> يوجّه 智谱 الطلب عبر إحدى عدّة محركات خلفية (智谱基础版/高阶版، 搜狗، 夸克). اختر
-> إحداها بمتغيّر البيئة `ZHIPU_SEARCH_ENGINE` (`search_std` افتراضيًا؛ وكذلك
-> `search_pro`، `search_pro_sogou`، `search_pro_quark`).
+| المحرك | المصادقة | الحالة |
+|--------|---------|--------|
+| [Wikipedia](https://www.mediawiki.org/wiki/API:Search) | بدون | ✅ |
+| [SearXNG](https://docs.searxng.org/) | `SEARXNG_URL` | ✅ |
+| [Tavily](https://docs.tavily.com/) | `TAVILY_API_KEY` | ✅ |
+| [Bing](https://learn.microsoft.com/en-us/bing/search-apis/bing-web-search/) | `BING_SEARCH_API_KEY` | ✅ |
+| [Brave](https://api.search.brave.com/app/documentation) | `BRAVE_SEARCH_API_KEY` | ✅ |
+| [智谱 (Zhipu)](https://docs.bigmodel.cn/cn/guide/tools/web-search) | `ZHIPU_API_KEY` | ✅ |
+| [博查 (Bocha)](https://open.bochaai.com/docs) | `BOCHA_API_KEY` | ✅ |
 
 ## الترخيص
 

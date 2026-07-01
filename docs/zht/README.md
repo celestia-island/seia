@@ -47,7 +47,7 @@ HTTPS_PROXY=http://localhost:7890 seia search "hello world"
 use seia::{SearchClient, Engine};
 
 let client = SearchClient::new();
-let results = client.search("rust 非同步", Engine::Duckduckgo).await?;
+let results = client.search("rust 非同步", Engine::Wikipedia).await?;
 ```
 
 ## 開發
@@ -60,29 +60,15 @@ just test-proxy  # 透過 localhost:7890 代理執行測試
 
 ## 支援的搜尋引擎
 
-所有引擎都透過其官方 HTTP API（沒有 API 時則為輕量 HTML 爬取）運作。seia 不綁定無頭瀏覽器 —— 是純 HTTP 用戶端。
-
-### 國際
-
-| 引擎 | 官網 | 模式 | 認證 | 免費額度 | 狀態 |
-|------|------|------|------|---------|------|
-| DuckDuckGo | [duckduckgo.com](https://duckduckgo.com) | 爬取 | 無 | 無限 | ✅ |
-| Wikipedia | [wikipedia.org](https://www.wikipedia.org) | API | 無 | 無限 | ✅ |
-| SearXNG | [searxng.org](https://searxng.org) | API | `SEARXNG_URL` | 自建 | ✅ |
-| Tavily | [tavily.com](https://tavily.com) | API | `TAVILY_API_KEY` | 1 000 / 月 | ✅ |
-| Bing | [bing.com](https://www.bing.com) | API | `BING_SEARCH_API_KEY` | 1 000 / 月 | ✅ |
-| Brave | [brave.com/search](https://brave.com/search) | API | `BRAVE_SEARCH_API_KEY` | 2 000 / 月 | ✅ |
-
-### 國內（中國）
-
-| 引擎 | 官網 | 模式 | 認證 | 狀態 |
-|------|------|------|------|------|
-| 智譜 (Zhipu) | [bigmodel.cn](https://bigmodel.cn) | API | `ZHIPU_API_KEY` | ✅ |
-| 博查 (Bocha) | [open.bochaai.com](https://open.bochaai.com) | API | `BOCHA_API_KEY` | ✅ |
-
-> 智譜會路由到多個後端引擎之一（智譜基礎版/高階版、搜狗、夸克）。透過
-> `ZHIPU_SEARCH_ENGINE` 環境變數選擇（預設為 `search_std`；亦可用 `search_pro`、
-> `search_pro_sogou`、`search_pro_quark`）。
+| 引擎 | 認證 | 狀態 |
+|------|------|------|
+| [Wikipedia](https://www.mediawiki.org/wiki/API:Search) | 無 | ✅ |
+| [SearXNG](https://docs.searxng.org/) | `SEARXNG_URL` | ✅ |
+| [Tavily](https://docs.tavily.com/) | `TAVILY_API_KEY` | ✅ |
+| [Bing](https://learn.microsoft.com/en-us/bing/search-apis/bing-web-search/) | `BING_SEARCH_API_KEY` | ✅ |
+| [Brave](https://api.search.brave.com/app/documentation) | `BRAVE_SEARCH_API_KEY` | ✅ |
+| [智譜 (Zhipu)](https://docs.bigmodel.cn/cn/guide/tools/web-search) | `ZHIPU_API_KEY` | ✅ |
+| [博查 (Bocha)](https://open.bochaai.com/docs) | `BOCHA_API_KEY` | ✅ |
 
 ## 授權條款
 

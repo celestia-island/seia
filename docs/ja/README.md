@@ -48,7 +48,7 @@ HTTPS_PROXY=http://localhost:7890 seia search "hello world"
 use seia::{SearchClient, Engine};
 
 let client = SearchClient::new();
-let results = client.search("rust async", Engine::Duckduckgo).await?;
+let results = client.search("rust async", Engine::Wikipedia).await?;
 ```
 
 ## 開発
@@ -60,30 +60,15 @@ just test        # cargo test
 
 ## 対応検索エンジン
 
-すべてのエンジンは公式の HTTP API（API がない場合は軽量な HTML スクレイプ）経由でアクセス
-します。ヘッドレスブラウザは一切バンドルされておらず、seia は純粋な HTTP クライアントです。
-
-### 国際
-
-| エンジン | 公式サイト | モード | 認証 | 無料枠 | 状態 |
-|--------|--------|------|------|------|--------|
-| DuckDuckGo | [duckduckgo.com](https://duckduckgo.com) | スクレイプ | なし | 無制限 | ✅ |
-| Wikipedia | [wikipedia.org](https://www.wikipedia.org) | API | なし | 無制限 | ✅ |
-| SearXNG | [searxng.org](https://searxng.org) | API | `SEARXNG_URL` | セルフホスト | ✅ |
-| Tavily | [tavily.com](https://tavily.com) | API | `TAVILY_API_KEY` | 1 000/月 | ✅ |
-| Bing | [bing.com](https://www.bing.com) | API | `BING_SEARCH_API_KEY` | 1 000/月 | ✅ |
-| Brave | [brave.com/search](https://brave.com/search) | API | `BRAVE_SEARCH_API_KEY` | 2 000/月 | ✅ |
-
-### 国内（中国）
-
-| エンジン | 公式サイト | モード | 認証 | 状態 |
-|--------|---------|------|------|--------|
-| 智谱 (Zhipu) | [bigmodel.cn](https://bigmodel.cn) | API | `ZHIPU_API_KEY` | ✅ |
-| 博查 (Bocha) | [open.bochaai.com](https://open.bochaai.com) | API | `BOCHA_API_KEY` | ✅ |
-
-> 智谱は複数のバッキングエンジン（智谱基础版/高阶版、搜狗、夸克）のいずれかを経由します。
-> `ZHIPU_SEARCH_ENGINE` 環境変数で選択してください（デフォルトは `search_std`。
-> `search_pro`、`search_pro_sogou`、`search_pro_quark` も指定可能）。
+| エンジン | 認証 | 状態 |
+|--------|------|--------|
+| [Wikipedia](https://www.mediawiki.org/wiki/API:Search) | なし | ✅ |
+| [SearXNG](https://docs.searxng.org/) | `SEARXNG_URL` | ✅ |
+| [Tavily](https://docs.tavily.com/) | `TAVILY_API_KEY` | ✅ |
+| [Bing](https://learn.microsoft.com/en-us/bing/search-apis/bing-web-search/) | `BING_SEARCH_API_KEY` | ✅ |
+| [Brave](https://api.search.brave.com/app/documentation) | `BRAVE_SEARCH_API_KEY` | ✅ |
+| [智谱 (Zhipu)](https://docs.bigmodel.cn/cn/guide/tools/web-search) | `ZHIPU_API_KEY` | ✅ |
+| [博查 (Bocha)](https://open.bochaai.com/docs) | `BOCHA_API_KEY` | ✅ |
 
 ## ライセンス
 

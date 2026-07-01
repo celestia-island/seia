@@ -49,7 +49,7 @@ HTTPS_PROXY=http://localhost:7890 seia search "hello world"
 use seia::{SearchClient, Engine};
 
 let client = SearchClient::new();
-let results = client.search("rust async", Engine::Duckduckgo).await?;
+let results = client.search("rust async", Engine::Wikipedia).await?;
 ```
 
 ## Разработка
@@ -61,32 +61,15 @@ just test        # cargo test
 
 ## Поддерживаемые поисковые движки
 
-Все движки обращаются к своему официальному HTTP-API (или, при отсутствии API,
-к лёгкому парсингу HTML). Никакого headless-браузера не прилагается — seia —
-это чистый HTTP-клиент.
-
-### Международные
-
-| Движок | Официальный сайт | Режим | Аутентификация | Бесплатный лимит | Статус |
-|--------|-----------------|------|---------------|-----------------|--------|
-| DuckDuckGo | [duckduckgo.com](https://duckduckgo.com) | Парсинг | нет | безлимитный | ✅ |
-| Wikipedia | [wikipedia.org](https://www.wikipedia.org) | API | нет | безлимитный | ✅ |
-| SearXNG | [searxng.org](https://searxng.org) | API | `SEARXNG_URL` | свой хостинг | ✅ |
-| Tavily | [tavily.com](https://tavily.com) | API | `TAVILY_API_KEY` | 1 000/мес | ✅ |
-| Bing | [bing.com](https://www.bing.com) | API | `BING_SEARCH_API_KEY` | 1 000/мес | ✅ |
-| Brave | [brave.com/search](https://brave.com/search) | API | `BRAVE_SEARCH_API_KEY` | 2 000/мес | ✅ |
-
-### Национальные (Китай)
-
-| Движок | Официальный сайт | Режим | Аутентификация | Статус |
-|--------|-----------------|------|---------------|--------|
-| 智谱 (Zhipu) | [bigmodel.cn](https://bigmodel.cn) | API | `ZHIPU_API_KEY` | ✅ |
-| 博查 (Bocha) | [open.bochaai.com](https://open.bochaai.com) | API | `BOCHA_API_KEY` | ✅ |
-
-> 智谱 маршрутизируется через один из нескольких нижележащих движков (智谱基础版/高阶版,
-> 搜狗, 夸克). Выберите нужный через переменную окружения `ZHIPU_SEARCH_ENGINE`
-> (`search_std` по умолчанию; также `search_pro`, `search_pro_sogou`,
-> `search_pro_quark`).
+| Движок | Аутентификация | Статус |
+|--------|---------------|--------|
+| [Wikipedia](https://www.mediawiki.org/wiki/API:Search) | нет | ✅ |
+| [SearXNG](https://docs.searxng.org/) | `SEARXNG_URL` | ✅ |
+| [Tavily](https://docs.tavily.com/) | `TAVILY_API_KEY` | ✅ |
+| [Bing](https://learn.microsoft.com/en-us/bing/search-apis/bing-web-search/) | `BING_SEARCH_API_KEY` | ✅ |
+| [Brave](https://api.search.brave.com/app/documentation) | `BRAVE_SEARCH_API_KEY` | ✅ |
+| [智谱 (Zhipu)](https://docs.bigmodel.cn/cn/guide/tools/web-search) | `ZHIPU_API_KEY` | ✅ |
+| [博查 (Bocha)](https://open.bochaai.com/docs) | `BOCHA_API_KEY` | ✅ |
 
 ## Лицензия
 

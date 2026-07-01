@@ -49,7 +49,7 @@ HTTPS_PROXY=http://localhost:7890 seia search "hello world"
 use seia::{SearchClient, Engine};
 
 let client = SearchClient::new();
-let results = client.search("rust async", Engine::Duckduckgo).await?;
+let results = client.search("rust async", Engine::Wikipedia).await?;
 ```
 
 ## 개발
@@ -61,30 +61,15 @@ just test        # cargo test
 
 ## 지원 검색 엔진
 
-모든 엔진은 공식 HTTP API(API가 없는 경우 가벼운 HTML 스크랩)를 통해 동작합니다.
-헤드리스 브라우저는 포함되어 있지 않습니다 — seia는 순수 HTTP 클라이언트입니다.
-
-### 국제
-
-| 엔진 | 공식 사이트 | 모드 | 인증 | 무료 한도 | 상태 |
-|------|---------|------|------|---------|------|
-| DuckDuckGo | [duckduckgo.com](https://duckduckgo.com) | 스크랩 | 없음 | 무제한 | ✅ |
-| Wikipedia | [wikipedia.org](https://www.wikipedia.org) | API | 없음 | 무제한 | ✅ |
-| SearXNG | [searxng.org](https://searxng.org) | API | `SEARXNG_URL` | 자체 호스팅 | ✅ |
-| Tavily | [tavily.com](https://tavily.com) | API | `TAVILY_API_KEY` | 1 000/월 | ✅ |
-| Bing | [bing.com](https://www.bing.com) | API | `BING_SEARCH_API_KEY` | 1 000/월 | ✅ |
-| Brave | [brave.com/search](https://brave.com/search) | API | `BRAVE_SEARCH_API_KEY` | 2 000/월 | ✅ |
-
-### 국내 (중국)
-
-| 엔진 | 공식 사이트 | 모드 | 인증 | 상태 |
-|------|---------|------|------|------|
-| 智谱 (Zhipu) | [bigmodel.cn](https://bigmodel.cn) | API | `ZHIPU_API_KEY` | ✅ |
-| 博查 (Bocha) | [open.bochaai.com](https://open.bochaai.com) | API | `BOCHA_API_KEY` | ✅ |
-
-> 智谱는 여러 백킹 엔진(智谱基础版/高阶版, 搜狗, 夸克) 중 하나를 경유하여 라우팅합니다.
-> `ZHIPU_SEARCH_ENGINE` 환경변수로 선택하세요 (기본값 `search_std`; 그 외 `search_pro`,
-> `search_pro_sogou`, `search_pro_quark`).
+| 엔진 | 인증 | 상태 |
+|------|------|------|
+| [Wikipedia](https://www.mediawiki.org/wiki/API:Search) | 없음 | ✅ |
+| [SearXNG](https://docs.searxng.org/) | `SEARXNG_URL` | ✅ |
+| [Tavily](https://docs.tavily.com/) | `TAVILY_API_KEY` | ✅ |
+| [Bing](https://learn.microsoft.com/en-us/bing/search-apis/bing-web-search/) | `BING_SEARCH_API_KEY` | ✅ |
+| [Brave](https://api.search.brave.com/app/documentation) | `BRAVE_SEARCH_API_KEY` | ✅ |
+| [智谱 (Zhipu)](https://docs.bigmodel.cn/cn/guide/tools/web-search) | `ZHIPU_API_KEY` | ✅ |
+| [博查 (Bocha)](https://open.bochaai.com/docs) | `BOCHA_API_KEY` | ✅ |
 
 ## 라이선스
 
