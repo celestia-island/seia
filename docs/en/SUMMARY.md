@@ -9,7 +9,6 @@
 - [Quick Start](./guides/quickstart.md)
 - [Engines](./guides/engines.md)
 - [Library Usage](./guides/library.md)
-- [Browser Mode](./guides/browser-mode.md)
 
 ---
 

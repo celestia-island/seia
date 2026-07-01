@@ -47,9 +47,6 @@ seia search "climate change" --json
 
 # Through a proxy
 HTTPS_PROXY=http://localhost:7890 seia search "hello world"
-
-# Browser mode (headless, no API key required)
-seia search "query" --browser --browser-engine google
 ```
 
 ### Library
@@ -70,7 +67,11 @@ just test        # cargo test
 
 ## Supported Search Engines
 
-### API / scrape engines
+All engines go through their official HTTP API (or, where none exists,
+lightweight HTML scraping). No headless browser is bundled — seia is a
+pure HTTP client.
+
+### International
 
 | Engine | Website | Mode | Auth | Free tier | Status |
 |--------|---------|------|------|-----------|--------|
@@ -78,29 +79,19 @@ just test        # cargo test
 | Wikipedia | [wikipedia.org](https://www.wikipedia.org) | API | None | unlimited | ✅ |
 | SearXNG | [searxng.org](https://searxng.org) | API | `SEARXNG_URL` | self-hosted | ✅ |
 | Tavily | [tavily.com](https://tavily.com) | API | `TAVILY_API_KEY` | 1 000/month | ✅ |
-| Bing | [bing.com](https://www.bing.com) | API | `BING_SEARCH_API_KEY` | 1 000/month | 🔜 |
-| Brave | [brave.com/search](https://brave.com/search) | API | `BRAVE_SEARCH_API_KEY` | 2 000/month | 🔜 |
+| Bing | [bing.com](https://www.bing.com) | API | `BING_SEARCH_API_KEY` | 1 000/month | ✅ |
+| Brave | [brave.com/search](https://brave.com/search) | API | `BRAVE_SEARCH_API_KEY` | 2 000/month | ✅ |
 
-> Bing and Brave API backends are stubs ("not yet implemented"). Use the
-> browser profiles as a stopgap, or [contribute](https://github.com/celestia-island/seia).
+### Domestic (China)
 
-### Browser engines (CLI-only)
+| Engine | Website | Mode | Auth | Status |
+|--------|---------|------|------|--------|
+| 智谱 (Zhipu) | [bigmodel.cn](https://bigmodel.cn) | API | `ZHIPU_API_KEY` | ✅ |
+| 博查 (Bocha) | [open.bochaai.com](https://open.bochaai.com) | API | `BOCHA_API_KEY` | ✅ |
 
-| Engine | Website | Auth | Description |
-|--------|---------|------|-------------|
-| Google | [google.com](https://www.google.com) | None (scrapes via tairitsu) | Google web search. |
-| Baidu | [baidu.com](https://www.baidu.com) | None (scrapes via tairitsu) | Baidu web search. |
-| Bing Web | [bing.com](https://www.bing.com) | None (scrapes via tairitsu) | Bing web results. |
-| Yandex | [yandex.com](https://yandex.com) | None (scrapes via tairitsu) | Yandex web search. |
-
-Browser-mode engines use [tairitsu](https://github.com/celestia-island/tairitsu)
-for headless rendering. Either run a standalone daemon or enable the
-`embedded-browser` feature to compile tairitsu in-process.
-
-> Most search engines offer official REST APIs. The browser profiles are a
-> workaround for engines whose API backend hasn't been implemented yet, or
-> where the API is not freely available. Long-term, each browser profile gets
-> a matching `Engine` variant with API-key support.
+> 智谱 routes through one of several backing engines (智谱基础版/高阶版, 搜狗,
+> 夸克). Pick one with the `ZHIPU_SEARCH_ENGINE` env var (`search_std` by
+> default; also `search_pro`, `search_pro_sogou`, `search_pro_quark`).
 
 ## License
 
