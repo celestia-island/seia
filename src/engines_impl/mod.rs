@@ -4,6 +4,7 @@ pub mod bing;
 pub mod bocha;
 pub mod brave;
 pub mod duckduckgo;
+pub mod metaso;
 pub mod searxng;
 pub mod tavily;
 pub mod wikipedia;

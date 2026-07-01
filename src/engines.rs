@@ -22,6 +22,8 @@ pub enum Engine {
     Zhipu,
     /// 博查 (Bocha) Web Search API — domestic Chinese web search.
     Bocha,
+    /// 秘塔 (Metaso) Web Search API — ad-free domestic Chinese AI search.
+    Metaso,
 }
 
 impl Engine {
@@ -35,6 +37,7 @@ impl Engine {
             Self::Brave => "brave",
             Self::Zhipu => "zhipu",
             Self::Bocha => "bocha",
+            Self::Metaso => "metaso",
         }
     }
 
@@ -46,6 +49,7 @@ impl Engine {
             Self::Brave => Some("BRAVE_SEARCH_API_KEY"),
             Self::Zhipu => Some("ZHIPU_API_KEY"),
             Self::Bocha => Some("BOCHA_API_KEY"),
+            Self::Metaso => Some("METASO_API_KEY"),
             _ => None,
         }
     }

@@ -70,6 +70,7 @@ impl SearchClient {
             Engine::Brave => crate::engines_impl::brave::search(&self.http, query, &opts).await?,
             Engine::Zhipu => crate::engines_impl::zhipu::search(&self.http, query, &opts).await?,
             Engine::Bocha => crate::engines_impl::bocha::search(&self.http, query, &opts).await?,
+            Engine::Metaso => crate::engines_impl::metaso::search(&self.http, query, &opts).await?,
         };
 
         let mut items = items;

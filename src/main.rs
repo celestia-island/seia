@@ -94,6 +94,7 @@ async fn main() -> anyhow::Result<()> {
             println!("  brave       — Brave Search API (BRAVE_SEARCH_API_KEY)");
             println!("  zhipu       — 智谱 web_search tool (ZHIPU_API_KEY)");
             println!("  bocha       — 博查 Web Search API (BOCHA_API_KEY)");
+            println!("  metaso      — 秘塔 Web Search API (METASO_API_KEY)");
         }
     }
 

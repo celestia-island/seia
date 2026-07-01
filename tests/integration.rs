@@ -89,6 +89,7 @@ mod tests {
         assert_eq!(Engine::Brave.as_str(), "brave");
         assert_eq!(Engine::Zhipu.as_str(), "zhipu");
         assert_eq!(Engine::Bocha.as_str(), "bocha");
+        assert_eq!(Engine::Metaso.as_str(), "metaso");
     }
 
     #[test]
@@ -100,6 +101,7 @@ mod tests {
         assert_eq!(Engine::Brave.api_key_env(), Some("BRAVE_SEARCH_API_KEY"));
         assert_eq!(Engine::Zhipu.api_key_env(), Some("ZHIPU_API_KEY"));
         assert_eq!(Engine::Bocha.api_key_env(), Some("BOCHA_API_KEY"));
+        assert_eq!(Engine::Metaso.api_key_env(), Some("METASO_API_KEY"));
     }
 
     #[test]
@@ -111,6 +113,7 @@ mod tests {
         assert!(Engine::Brave.needs_key());
         assert!(Engine::Zhipu.needs_key());
         assert!(Engine::Bocha.needs_key());
+        assert!(Engine::Metaso.needs_key());
     }
 
     /// SearchOptions defaults.
@@ -187,9 +190,16 @@ mod tests {
             "BRAVE_SEARCH_API_KEY",
             "ZHIPU_API_KEY",
             "BOCHA_API_KEY",
+            "METASO_API_KEY",
         ];
         let client = SearchClient::new();
-        for &engine in &[Engine::Bing, Engine::Brave, Engine::Zhipu, Engine::Bocha] {
+        for &engine in &[
+            Engine::Bing,
+            Engine::Brave,
+            Engine::Zhipu,
+            Engine::Bocha,
+            Engine::Metaso,
+        ] {
             // If the developer happens to have a key set locally, skip — we
             // can only assert the missing-key path when the key is actually
             // absent.
