@@ -6,7 +6,7 @@
 
 <strong>Conocimiento de todas las fuentes</strong>
 
-Búsqueda web multimotor para Rust. Los motores gratuitos funcionan desde el primer momento
+Biblioteca y CLI de búsqueda web multimotor.
 
 [![License: SySL-1.0](https://img.shields.io/badge/License-SySL--1.0-blue.svg)](../../LICENSE)
 [![Crates.io](https://img.shields.io/crates/v/seia)](https://docs.rs/seia)
@@ -23,16 +23,16 @@ Búsqueda web multimotor para Rust. Los motores gratuitos funcionan desde el pri
 
 ## Introducción
 
-seia es una biblioteca y CLI de búsqueda web multimotor escrita en Rust. Proporciona
-una interfaz unificada para consultar diversos backends de búsqueda. Los motores que no
-requieren autenticación funcionan de inmediato sin configuración.
+seia es una biblioteca y CLI de búsqueda web multimotor. Proporciona una interfaz
+unificada para consultar diversos backends de búsqueda. Los motores que no requieren
+autenticación funcionan de inmediato sin configuración.
 
 ## Inicio rápido
 
 ### CLI
 
 ```bash
-# Búsqueda básica (motor gratuito, sin clave)
+# Búsqueda básica (sin clave API)
 seia search "rust async patterns"
 
 # Elegir un motor específico

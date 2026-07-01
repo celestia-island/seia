@@ -6,7 +6,7 @@
 
 <strong>阅览互联网上的知识</strong>
 
-多引擎 Web 搜索库与 CLI，Rust 实现。免费引擎开箱即用
+多引擎 Web 搜索库与 CLI。
 
 [![License: SySL-1.0](https://img.shields.io/badge/License-SySL--1.0-blue.svg)](../../LICENSE)
 [![Crates.io](https://img.shields.io/crates/v/seia)](https://docs.rs/seia)
@@ -23,14 +23,14 @@
 
 ## 简介
 
-seia 是一个 Rust 多引擎 Web 搜索库与 CLI 工具。通过统一接口访问多样化的搜索后端——无需认证的引擎零配置即可使用。
+seia 是一个多引擎 Web 搜索库与 CLI 工具。通过统一接口访问多样化的搜索后端，无需认证的引擎零配置即可使用。
 
 ## 快速开始
 
 ### CLI
 
 ```bash
-# 基础搜索（免费引擎，无需密钥）
+# 基础搜索（无需 API 密钥）
 seia search "rust 异步模式"
 
 # 选择某个搜索引擎

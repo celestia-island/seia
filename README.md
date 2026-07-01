@@ -5,7 +5,7 @@
 <p align="center"><strong>Knowledge from every source</strong></p>
 
 <p align="center">
-  Rust multi-engine web search library and CLI. Free engines work out of the box.
+  Multi-engine web search library and CLI.
 </p>
 
 <div align="center">
@@ -31,16 +31,16 @@
 
 ## Introduction
 
-seia is a multi-engine web search library and CLI written in Rust. It provides
-a unified interface to query diverse search backends. Engines that do not
-require authentication work out of the box with zero configuration.
+seia is a multi-engine web search library and CLI. It provides a unified
+interface to query diverse search backends. Engines that do not require
+authentication work out of the box with zero configuration.
 
 ## Quick Start
 
 ### CLI
 
 ```bash
-# Basic search (free engine, no key required)
+# Basic search (no API key required)
 seia search "rust async patterns"
 
 # Choose a specific engine
