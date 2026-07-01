@@ -9,6 +9,7 @@ description = "Universal search engine abstraction — multi-backend web search 
 repository = "https://github.com/celestia-island/seia"
 keywords = ["search", "web", "duckduckgo", "tavily", "searxng"]
 categories = ["api-bindings", "web-programming", "command-line-interface"]
+exclude = ["docs/", "justfile", ".github/"]
 
 [[bin]]
 name = "seia"
@@ -32,7 +33,7 @@ url = "^2"
 regex = "^1"
 scraper = "^0.22"
 tokio-stream = "^0.1"
-shirabe = { path = "../shirabe" }
+shirabe = { version = "0.1.0", path = "../shirabe" }
 
 [features]
 default = []

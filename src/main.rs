@@ -58,7 +58,16 @@ async fn main() -> anyhow::Result<()> {
     let cli = Cli::parse();
 
     match cli.cmd {
-        Command::Search { query, engine, browser_engine, json, fetch, limit, browser, proxy } => {
+        Command::Search {
+            query,
+            engine,
+            browser_engine,
+            json,
+            fetch,
+            limit,
+            browser,
+            proxy,
+        } => {
             if browser {
                 // Start embedded browser server
                 let port = 3001u16;
@@ -75,19 +84,24 @@ async fn main() -> anyhow::Result<()> {
 
                 // Select profile
                 let engine_name = browser_engine.as_deref().unwrap_or("google");
-                let profile = seia::profiles::get_profile(engine_name)
-                    .ok_or_else(|| anyhow::anyhow!(
+                let profile = seia::profiles::get_profile(engine_name).ok_or_else(|| {
+                    anyhow::anyhow!(
                         "unknown browser engine '{}'. Options: google, baidu, bing_web, yandex",
                         engine_name
-                    ))?;
+                    )
+                })?;
 
                 let result = client.search(&query, profile).await?;
 
                 if json {
                     println!("{}", serde_json::to_string_pretty(&result)?);
                 } else {
-                    println!("Engine: {} (browser) | {} results | {}ms\n",
-                        result.engine, result.items.len(), result.elapsed_ms);
+                    println!(
+                        "Engine: {} (browser) | {} results | {}ms\n",
+                        result.engine,
+                        result.items.len(),
+                        result.elapsed_ms
+                    );
                     for (i, item) in result.items.iter().enumerate() {
                         println!("{}. {}", i + 1, item.title);
                         println!("   {}", item.url);
@@ -108,16 +122,16 @@ async fn main() -> anyhow::Result<()> {
                 searxng_url: None,
             };
 
-            let result = client
-                .search_with_options(&query, engine, opts)
-                .await?;
+            let result = client.search_with_options(&query, engine, opts).await?;
 
             if json {
                 println!("{}", serde_json::to_string_pretty(&result)?);
             } else {
                 println!(
                     "Engine: {} | {} results | {}ms\n",
-                    result.engine, result.items.len(), result.elapsed_ms
+                    result.engine,
+                    result.items.len(),
+                    result.elapsed_ms
                 );
                 for (i, item) in result.items.iter().enumerate() {
                     println!("{}. {}", i + 1, item.title);
