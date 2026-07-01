@@ -23,33 +23,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup mdBook
-        uses: peaceiris/actions-mdbook@v2
+      # Render the multilingual docs tree with Lagrange (replaces mdBook).
+      # The composite action checks celestia-island/lagrange out alongside
+      # this repo and runs `lagrange build --src docs --out _site`.
+      - uses: celestia-island/lagrange/.github/actions/build@dev
         with:
-          mdbook-version: '0.5.2'
+          src: docs
+          out: _site
 
-      - name: Build all language docs
-        run: |
-          for lang in en zhs zht fr es ru ar ja ko; do
-            echo "Building $lang..."
-            mdbook build docs/$lang
-          done
+      - run: echo "seia.docs.celestia.world" > _site/CNAME
 
-      - name: Assemble site
-        run: |
-          mkdir -p _site/theme
-          # English at root
-          cp -r target/docs/en/* _site/
-          # Other languages in subdirectories
-          for lang in zhs zht fr es ru ar ja ko; do
-            cp -r target/docs/$lang _site/$lang
-          done
-          cp docs/theme/lang-switcher.js _site/theme/
-          cp docs/theme/lang-switcher.css _site/theme/
-          echo "seia.docs.celestia.world" > _site/CNAME
-
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
 
