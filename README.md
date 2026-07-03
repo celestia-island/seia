@@ -25,8 +25,6 @@
 <a href="./docs/ar/README.md">العربية</a>
 </div>
 
-<p align="center"><img src="res/search_solarized_dark.png" alt="seia search results" /></p>
-
 ## Introduction
 
 seia is a multi-engine web search library and CLI. It provides a unified
@@ -85,3 +83,10 @@ just test-proxy  # run tests through localhost:7890 proxy (see tests/README)
 ## License
 
 SySL-1.0 (Synthetic Source License). See [LICENSE](./LICENSE).
+
+<details>
+<summary>Screenshots</summary>
+
+<p align="center"><img src="res/search_solarized_dark.png" alt="seia snapshot" height="400" /></p>
+
+</details>
