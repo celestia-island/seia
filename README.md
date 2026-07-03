@@ -1,4 +1,4 @@
-<p align="center"><img src="docs/logo.webp" alt="seia" width="240" /></p>
+<p align="center"><img src="https://raw.githubusercontent.com/celestia-island/seia/master/docs/logo.webp" alt="seia" width="240" /></p>
 
 <h1 align="center">seia</h1>
 
@@ -14,7 +14,7 @@
 </div>
 
 <div align="center">
-<a href="./docs/en/README.md">English</a> ·
+**English** ·
 <a href="./docs/zhs/README.md">简体中文</a> ·
 <a href="./docs/zht/README.md">繁體中文</a> ·
 <a href="./docs/ja/README.md">日本語</a> ·
