@@ -12,6 +12,9 @@ keywords = ["search", "web", "duckduckgo", "tavily", "searxng"]
 categories = ["api-bindings", "web-programming", "command-line-interface"]
 exclude = ["docs/", "justfile", ".github/"]
 
+[package.metadata.docs.rs]
+all-features = true
+
 [[bin]]
 name = "seia"
 path = "src/main.rs"

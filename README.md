@@ -8,6 +8,7 @@
 
 [![License: SySL-1.0](https://img.shields.io/badge/License-SySL--1.0-blue.svg)](./LICENSE)
 [![Crates.io](https://img.shields.io/crates/v/seia)](https://docs.rs/seia)
+[![docs.rs](https://docs.rs/seia/badge.svg)](https://docs.rs/seia)
 [![CI](https://img.shields.io/github/actions/workflow/status/celestia-island/seia/checks.yml)](https://github.com/celestia-island/seia/actions/workflows/checks.yml)
 [![Docs](https://img.shields.io/badge/docs-seia.docs.celestia.world-blue)](https://seia.docs.celestia.world)
 
