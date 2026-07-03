@@ -80,9 +80,6 @@ just test-proxy  # run tests through localhost:7890 proxy (see tests/README)
 | [智谱 (Zhipu)](https://docs.bigmodel.cn/cn/guide/tools/web-search) | `ZHIPU_API_KEY` |
 | [博查 (Bocha)](https://open.bochaai.com/docs) | `BOCHA_API_KEY` |
 
-## License
-
-SySL-1.0 (Synthetic Source License). See [LICENSE](./LICENSE).
 
 <details>
 <summary>Screenshots</summary>
@@ -90,3 +87,7 @@ SySL-1.0 (Synthetic Source License). See [LICENSE](./LICENSE).
 <p align="center"><img src="res/search_solarized_dark.png" alt="seia snapshot" height="400" /></p>
 
 </details>
+
+## License
+
+SySL-1.0 (Synthetic Source License). See [LICENSE](./LICENSE).
