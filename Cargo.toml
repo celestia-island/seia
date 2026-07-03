@@ -5,6 +5,7 @@ edition = "2024"
 rust-version = "1.85"
 authors = ["langyo <langyo.china@gmail.com>"]
 license-file = "LICENSE"
+readme = "README.md"
 description = "Universal search engine abstraction — multi-backend web search through official APIs and lightweight HTML scraping"
 repository = "https://github.com/celestia-island/seia"
 keywords = ["search", "web", "duckduckgo", "tavily", "searxng"]
