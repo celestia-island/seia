@@ -10,11 +10,11 @@ pub mod engines_impl;
 pub mod extractor;
 pub mod result;
 pub mod utils;
-
-pub use client::{SearchClient, SearchOptions};
-pub use engines::Engine;
-pub use result::{SearchItem, SearchMode, SearchResult};
-
 pub mod prelude {
+
+    pub use client::{SearchClient, SearchOptions};
+    pub use engines::Engine;
+    pub use result::{SearchItem, SearchMode, SearchResult};
+
     pub use crate::{Engine, SearchClient, SearchItem, SearchMode, SearchResult};
 }

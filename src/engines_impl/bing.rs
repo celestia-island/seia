@@ -7,9 +7,11 @@
 use anyhow::{Result, anyhow};
 use serde::Deserialize;
 
-use crate::client::SearchOptions;
-use crate::engines_impl::EngineOutput;
-use crate::result::{SearchItem, SearchMode};
+use crate::{
+    client::SearchOptions,
+    engines_impl::EngineOutput,
+    result::{SearchItem, SearchMode},
+};
 
 /// Default Bing Search v7 endpoint. Override with `BING_SEARCH_ENDPOINT` for
 /// sovereign clouds or self-hosted proxies.
