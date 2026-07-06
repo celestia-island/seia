@@ -1,6 +1,7 @@
 //! Tests for seia library — CLI smoke tests, API unit tests, engine verification.
 
 mod tests {
+
     use seia::{Engine, SearchClient, SearchOptions};
 
     /// Build a client for the live-network tests.

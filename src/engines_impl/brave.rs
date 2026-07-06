@@ -8,9 +8,11 @@
 use anyhow::{Result, anyhow};
 use serde::Deserialize;
 
-use crate::client::SearchOptions;
-use crate::engines_impl::EngineOutput;
-use crate::result::{SearchItem, SearchMode};
+use crate::{
+    client::SearchOptions,
+    engines_impl::EngineOutput,
+    result::{SearchItem, SearchMode},
+};
 
 const ENDPOINT: &str = "https://api.search.brave.com/res/v1/web/search";
 

@@ -1,11 +1,9 @@
 //! Search client — unified entry point dispatching to engine backends.
 
+use anyhow::{Result, anyhow};
 use std::time::Instant;
 
-use anyhow::{Result, anyhow};
-
-use crate::engines::Engine;
-use crate::result::SearchResult;
+use crate::{engines::Engine, result::SearchResult};
 
 pub struct SearchClient {
     http: reqwest::Client,

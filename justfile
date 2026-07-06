@@ -1,4 +1,6 @@
 set shell := ["bash", "-c"]
+import "./celestia-devtools.just"
+
 default:
     @just --list
 fmt:
@@ -15,4 +17,4 @@ test-proxy:
     SEIA_TEST_PROXY=http://localhost:7890 cargo test
 build:
     cargo build --all-features
-ci: fmt-check && clippy && test
+ci: fmt-check clippy test
