@@ -3,11 +3,14 @@
 //! Scrapes <https://html.duckduckgo.com/html/> and parses result anchors.
 
 use anyhow::{Result, anyhow};
+
 use scraper::{Html, Selector};
 
-use crate::client::SearchOptions;
-use crate::engines_impl::EngineOutput;
-use crate::result::{SearchItem, SearchMode};
+use crate::{
+    client::SearchOptions,
+    engines_impl::EngineOutput,
+    result::{SearchItem, SearchMode},
+};
 
 /// Search using `DuckDuckGo` HTML scraping.
 ///

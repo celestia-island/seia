@@ -1,7 +1,8 @@
 //! Engine enumeration and dispatch.
 
-use clap::ValueEnum;
 use serde::{Deserialize, Serialize};
+
+use clap::ValueEnum;
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, ValueEnum)]
 #[serde(rename_all = "lowercase")]

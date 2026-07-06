@@ -16,5 +16,5 @@ pub use engines::Engine;
 pub use result::{SearchItem, SearchMode, SearchResult};
 
 pub mod prelude {
-    pub use crate::{Engine, SearchClient, SearchItem, SearchMode, SearchResult};
+    pub use crate::{Engine, SearchClient, SearchItem, SearchMode, SearchOptions, SearchResult};
 }

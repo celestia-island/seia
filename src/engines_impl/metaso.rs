@@ -29,9 +29,11 @@
 use anyhow::{Result, anyhow};
 use serde::Serialize;
 
-use crate::client::SearchOptions;
-use crate::engines_impl::EngineOutput;
-use crate::result::{SearchItem, SearchMode};
+use crate::{
+    client::SearchOptions,
+    engines_impl::EngineOutput,
+    result::{SearchItem, SearchMode},
+};
 
 const ENDPOINT: &str = "https://metaso.cn/api/v1/search";
 

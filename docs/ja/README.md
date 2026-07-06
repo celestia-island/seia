@@ -1,4 +1,4 @@
-<p align="center"><img src="../logo.webp" alt="seia" width="240" /></p>
+<p align="center"><img src="https://raw.githubusercontent.com/celestia-island/seia/master/docs/logo.webp" alt="seia" width="240" /></p>
 
 <h1 align="center">seia</h1>
 
@@ -6,7 +6,7 @@
 
 <div align="center">
 
-[![License: SySL-1.0](https://img.shields.io/badge/License-SySL--1.0-blue.svg)](../../LICENSE)
+[![License: SySL-1.0](https://img.shields.io/badge/License-SySL--1.0-blue.svg)](https://sysl.celestia.world)
 [![Crates.io](https://img.shields.io/crates/v/seia)](https://docs.rs/seia)
 [![CI](https://img.shields.io/github/actions/workflow/status/celestia-island/seia/checks.yml)](https://github.com/celestia-island/seia/actions/workflows/checks.yml)
 [![Docs](https://img.shields.io/badge/docs-seia.docs.celestia.world-blue)](https://seia.docs.celestia.world)
@@ -79,4 +79,4 @@ just test-proxy  # run tests through localhost:7890 proxy (see tests/README)
 
 ## ライセンス
 
-SySL-1.0（Synthetic Source License）。詳しくは [LICENSE](../../LICENSE) を参照してください。
+SySL-1.0（Synthetic Source License）。詳しくは [LICENSE](https://sysl.celestia.world) を参照してください。

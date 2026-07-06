@@ -12,9 +12,11 @@
 use anyhow::{Result, anyhow};
 use serde::{Deserialize, Serialize};
 
-use crate::client::SearchOptions;
-use crate::engines_impl::EngineOutput;
-use crate::result::{SearchItem, SearchMode};
+use crate::{
+    client::SearchOptions,
+    engines_impl::EngineOutput,
+    result::{SearchItem, SearchMode},
+};
 
 const ENDPOINT: &str = "https://open.bigmodel.cn/api/paas/v4/web_search";
 

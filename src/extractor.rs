@@ -4,6 +4,7 @@
 //! from the page, stripping navigation, ads, and scripts.
 
 use anyhow::Result;
+
 use scraper::{Html, Selector};
 
 /// Fetch and clean the main text content from a URL.
