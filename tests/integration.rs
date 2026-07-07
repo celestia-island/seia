@@ -42,6 +42,7 @@ mod tests {
     }
 
     /// Smoke test: Wikipedia API returns results.
+    #[ignore = "requires network access; run manually with --ignored"]
     #[tokio::test]
     async fn test_wikipedia_smoke() {
         let client = test_client();
@@ -59,6 +60,7 @@ mod tests {
     }
 
     /// Wikipedia: academic query returns relevant results.
+    #[ignore = "requires network access; run manually with --ignored"]
     #[tokio::test]
     async fn test_wikipedia_academic() {
         let client = test_client();
@@ -148,6 +150,7 @@ mod tests {
     }
 
     /// Fallback search: tries multiple engines.
+    #[ignore = "requires network access; run manually with --ignored"]
     #[tokio::test]
     async fn test_search_fallback() {
         let client = test_client();
