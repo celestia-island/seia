@@ -1,18 +1,21 @@
-<p align="center"><img src="https://raw.githubusercontent.com/celestia-island/seia/master/docs/logo.webp" alt="seia" width="240" /></p>
+<p align="center"><img src="https://raw.githubusercontent.com/celestia-island/seia/master/docs/logo.webp" alt="Seia" width="240" /></p>
 
-<h1 align="center">seia</h1>
+<h1 align="center">Seia</h1>
 
 <p align="center"><strong>Multi-engine web search</strong></p>
 
 <div align="center">
 
 [![License: SySL-1.0](https://img.shields.io/badge/License-SySL--1.0-blue.svg)](https://sysl.celestia.world)
-[![CI](https://img.shields.io/github/actions/workflow/status/celestia-island/seia/checks.yml)](https://github.com/celestia-island/seia/actions/workflows/checks.yml)
+[![GitHub](https://img.shields.io/badge/github-celestia--island%2Fseia-blue.svg)](https://github.com/celestia-island/seia)
+[![Checks](https://img.shields.io/github/actions/workflow/status/celestia-island/seia/checks.yml)](https://github.com/celestia-island/seia/actions/workflows/checks.yml)
 [![Docs](https://img.shields.io/badge/docs-seia.docs.celestia.world-blue)](https://seia.docs.celestia.world)
+[![docs.rs](https://docs.rs/seia/badge.svg)](https://docs.rs/seia)
 
 </div>
 
 <div align="center">
+
 **English** ·
 [简体中文](./docs/zhs/README.md) ·
 [繁體中文](./docs/zht/README.md) ·
