@@ -9,7 +9,7 @@
 [![License: SySL-1.0](https://img.shields.io/badge/License-SySL--1.0-blue.svg)](https://sysl.celestia.world)
 [![GitHub](https://img.shields.io/badge/github-celestia--island%2Fseia-blue.svg)](https://github.com/celestia-island/seia)
 [![Checks](https://img.shields.io/github/actions/workflow/status/celestia-island/seia/checks.yml)](https://github.com/celestia-island/seia/actions/workflows/checks.yml)
-[![Docs](https://img.shields.io/badge/docs-seia.celestia.world-blue)](https://seia.celestia.world)
+[![Docs](https://img.shields.io/badge/docs-seia.docs.celestia.world-blue)](https://seia.docs.celestia.world)
 [![docs.rs](https://docs.rs/seia/badge.svg)](https://docs.rs/seia)
 
 </div>
