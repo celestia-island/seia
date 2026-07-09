@@ -37,6 +37,15 @@ url = "^2"
 regex = "^1"
 scraper = "^0.22"
 tokio-stream = "^0.1"
+# MCP (optional, for standalone MCP server)
+rmcp = { version = "^1", optional = true, features = ["server", "transport-io", "macros", "schemars"] }
+schemars = { version = "^1", optional = true, features = ["derive"] }
+
+[features]
+default = []
+# Standalone MCP (Model Context Protocol) server exposing the search tools over
+# stdio. Requires rmcp + schemars; pulls in tokio io-std at the binary level.
+mcp = ["dep:rmcp", "dep:schemars", "tokio/io-std"]
 
 [dev-dependencies]
 tokio-test = "^0.4"

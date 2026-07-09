@@ -52,6 +52,23 @@ seia search "climate change" --json
 HTTPS_PROXY=http://localhost:7890 seia search "hello world"
 ```
 
+### npx (no Rust toolchain required)
+
+Prebuilt binaries are published to npm, so you can run `seia` with a single
+command — no `cargo build`:
+
+```bash
+npx @celestia-island/seia search "rust async patterns"
+npx @celestia-island/seia mcp        # the MCP server (needs the mcp build)
+```
+
+The `@celestia-island/seia` root package pulls the right platform subpackage
+(`-linux-x64` / `-darwin-arm64` / `-win32-x64`) automatically. To pin a version:
+
+```bash
+npx @celestia-island/seia@0.1.0 search "Klein bottle" --engine wikipedia
+```
+
 ### Library
 
 ```rust
@@ -60,6 +77,32 @@ use seia::{SearchClient, Engine};
 let client = SearchClient::new();
 let results = client.search("rust async", Engine::Wikipedia).await?;
 ```
+
+## MCP server
+
+Build seia with the `mcp` feature and run the stdio server — it exposes the
+multi-engine search client to AI coding assistants over the Model Context
+Protocol:
+
+```bash
+seia mcp
+```
+
+The server advertises three tools: `seia_search` (one engine, defaults to
+duckduckgo so it needs no key), `seia_search_multi` (try a chain of engines,
+return the first with results), and `seia_list_engines` (the nine engines and
+their API-key env vars). Wire it into an MCP client:
+
+```json
+{
+  "mcpServers": {
+    "seia": { "command": "seia", "args": ["mcp"] }
+  }
+}
+```
+
+Set `SEIA_PROXY` to route search requests through a proxy
+(e.g. `http://localhost:7890`); `HTTPS_PROXY` / `HTTP_PROXY` are also honoured.
 
 ## Development
 

@@ -8,6 +8,8 @@ pub mod client;
 pub mod engines;
 pub mod engines_impl;
 pub mod extractor;
+#[cfg(feature = "mcp")]
+pub mod mcp;
 pub mod result;
 pub mod utils;
 
