@@ -75,7 +75,7 @@ jobs:
 
       # Build with the mcp feature so `seia mcp` ships in the binary.
       - name: Build (release)
-        run: cargo build --release --locked --features mcp --target ${{ matrix.target }}
+        run: cargo build --release --features mcp --target ${{ matrix.target }}
 
       - name: Stage subpackage
         shell: bash
