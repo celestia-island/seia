@@ -34,6 +34,11 @@ enum Command {
 
     /// List available engines
     Engines,
+
+    /// Run the MCP (Model Context Protocol) server on stdio, exposing the
+    /// search tools to AI coding assistants.
+    #[cfg(feature = "mcp")]
+    Mcp,
 }
 
 #[tokio::main]
@@ -95,6 +100,11 @@ async fn main() -> anyhow::Result<()> {
             println!("  zhipu       — 智谱 web_search tool (ZHIPU_API_KEY)");
             println!("  bocha       — 博查 Web Search API (BOCHA_API_KEY)");
             println!("  metaso      — 秘塔 Web Search API (METASO_API_KEY)");
+        }
+
+        #[cfg(feature = "mcp")]
+        Command::Mcp => {
+            seia::mcp::run().await?;
         }
     }
 
