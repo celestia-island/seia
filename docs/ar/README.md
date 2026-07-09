@@ -60,6 +60,26 @@ let client = SearchClient::new();
 let results = client.search("rust async", Engine::Wikipedia).await?;
 ```
 
+## خادم MCP
+
+ابنِ seia بميزة `mcp` وشغّل خادم stdio — فهو يعرض عميل البحث متعدد المحركات لمساعدي الترميز بالذكاء الاصطناعي عبر بروتوكول سياق النموذج (Model Context Protocol):
+
+```bash
+seia mcp
+```
+
+يُعلن الخادم عن ثلاث أدوات: `seia_search` (محرك واحد، افتراضي duckduckgo بدون مفتاح)، `seia_search_multi` (يجرب سلسلة محركات، يُعيد الأول بنتائج)، و`seia_list_engines` (المحركات التسعة ومتغيرات بيئة مفاتيح API). وصله بعميل MCP:
+
+```json
+{
+  "mcpServers": {
+    "seia": { "command": "seia", "args": ["mcp"] }
+  }
+}
+```
+
+عيّن `SEIA_PROXY` لتوجيه طلبات البحث عبر وكيل (مثلاً `http://localhost:7890`)؛ `HTTPS_PROXY` / `HTTP_PROXY` مدعومة أيضاً.
+
 ## التطوير
 
 ```bash

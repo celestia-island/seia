@@ -57,6 +57,26 @@ let client = SearchClient::new();
 let results = client.search("rust async", Engine::Wikipedia).await?;
 ```
 
+## Serveur MCP
+
+Construisez seia avec la feature `mcp` et lancez le serveur stdio — il expose le client de recherche multi-moteur aux assistants de codage IA via le Model Context Protocol :
+
+```bash
+seia mcp
+```
+
+Le serveur annonce trois outils : `seia_search` (un moteur, duckduckgo par défaut donc sans clé requise), `seia_search_multi` (essaie une chaîne de moteurs, renvoie le premier avec des résultats) et `seia_list_engines` (les neuf moteurs et leurs variables d'environnement de clé API). Branchez-le dans un client MCP :
+
+```json
+{
+  "mcpServers": {
+    "seia": { "command": "seia", "args": ["mcp"] }
+  }
+}
+```
+
+Définissez `SEIA_PROXY` pour router les requêtes de recherche via un proxy (par ex. `http://localhost:7890`) ; `HTTPS_PROXY` / `HTTP_PROXY` sont également honorés.
+
 ## Développement
 
 ```bash
