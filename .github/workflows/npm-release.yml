@@ -45,14 +45,14 @@ jobs:
           - { os: macos-latest,       target: x86_64-apple-darwin,       suffix: -darwin-x64 }
           - { os: windows-latest, target: x86_64-pc-windows-msvc,    suffix: -win32-x64 }
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: dtolnay/rust-toolchain@stable
         with:
           targets: ${{ matrix.target }}
       - uses: Swatinem/rust-cache@v2
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.x"
 
@@ -132,10 +132,10 @@ jobs:
     needs: build-subpackage
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.x"
 
