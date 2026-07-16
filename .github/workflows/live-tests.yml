@@ -1,9 +1,8 @@
 name: live free-platform tests
 
 on:
-  schedule:
-    # Daily at 9:00 UTC — low-frequency to avoid hitting rate limits.
-    - cron: '0 9 * * *'
+  push:
+    branches: [master]
   workflow_dispatch: {}
 
 jobs:
