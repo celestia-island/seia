@@ -95,6 +95,8 @@ jobs:
 
       - name: Build (release)
         run: cargo build --release --features mcp --target ${{ matrix.target }}
+        env:
+          CROSS_NO_WARNINGS: 0
 
       - name: Stage subpackage
         shell: bash
