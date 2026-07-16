@@ -55,6 +55,26 @@ let client = SearchClient::new();
 let results = client.search("rust async", Engine::Wikipedia).await?;
 ```
 
+## MCP 服务器
+
+使用 `mcp` feature 构建 seia 并运行 stdio 服务器——它通过模型上下文协议（Model Context Protocol）将多引擎搜索客户端暴露给 AI 编码助手：
+
+```bash
+seia mcp
+```
+
+服务器提供三个工具：`seia_search`（单引擎，默认使用 duckduckgo，无需 API 密钥）、`seia_search_multi`（尝试一系列引擎，返回第一个有结果的）和 `seia_list_engines`（列出九个引擎及其 API 密钥环境变量）。将其接入 MCP 客户端：
+
+```json
+{
+  "mcpServers": {
+    "seia": { "command": "seia", "args": ["mcp"] }
+  }
+}
+```
+
+设置 `SEIA_PROXY` 通过代理路由搜索请求（例如 `http://localhost:7890`）；也支持 `HTTPS_PROXY` / `HTTP_PROXY`。
+
 ## 开发
 
 ```bash
