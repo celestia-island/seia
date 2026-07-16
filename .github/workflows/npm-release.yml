@@ -62,8 +62,11 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
           registry-url: https://registry.npmjs.org/
+
+      - name: Upgrade npm for Trusted Publishing
+        run: npm install -g npm@latest
 
       - name: Resolve version
         id: ver
@@ -107,7 +110,7 @@ jobs:
             --binary "$bin" \
             --rust-target "${{ matrix.target }}" \
             --out-dir dist \
-            --description "Multi-engine web search with custom engine config support (npx launcher)" \
+            --description "Multi-engine web search — unified interface to nine backends (npx launcher)" \
             --repository "https://github.com/celestia-island/seia" \
             --homepage "https://github.com/celestia-island/seia"
 
@@ -121,11 +124,14 @@ jobs:
       - name: Publish subpackage
         shell: bash
         run: |
+          unset NODE_AUTH_TOKEN
+          rm -f "$NPM_CONFIG_USERCONFIG"
+
+          npm --version
           sub="dist/seia${{ matrix.suffix }}"
-          echo "::group::npm pack $sub"
-          (cd "$sub" && npm pack --dry-run)
+          echo "::group::npm publish verbose"
+          (cd "$sub" && npm publish --access public --provenance --loglevel verbose 2>&1 | tail -60)
           echo "::endgroup::"
-          (cd "$sub" && npm publish --access public --provenance)
 
   publish-root:
     name: Publish root @celestia-island/seia to npm
@@ -145,8 +151,11 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
           registry-url: https://registry.npmjs.org/
+
+      - name: Upgrade npm for Trusted Publishing
+        run: npm install -g npm@latest
 
       - name: Resolve version
         id: ver
@@ -168,12 +177,14 @@ jobs:
             --name seia \
             --version "${{ steps.ver.outputs.version }}" \
             --out-dir dist \
-            --description "Multi-engine web search with custom engine config support (npx launcher)" \
+            --description "Multi-engine web search — unified interface to nine backends (npx launcher)" \
             --repository "https://github.com/celestia-island/seia" \
             --homepage "https://github.com/celestia-island/seia"
 
       - name: Publish root package
         run: |
+          rm -f "$NPM_CONFIG_USERCONFIG"
+          unset NODE_AUTH_TOKEN
           echo "::group::npm pack (root)"
           (cd dist && npm pack --dry-run)
           echo "::endgroup::"
