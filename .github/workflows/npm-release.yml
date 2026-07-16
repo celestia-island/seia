@@ -107,7 +107,7 @@ jobs:
             --binary "$bin" \
             --rust-target "${{ matrix.target }}" \
             --out-dir dist \
-            --description "Multi-engine web search with custom engine config support (npx launcher)" \
+            --description "Multi-engine web search — unified interface to nine backends (npx launcher)" \
             --repository "https://github.com/celestia-island/seia" \
             --homepage "https://github.com/celestia-island/seia"
 
@@ -168,7 +168,7 @@ jobs:
             --name seia \
             --version "${{ steps.ver.outputs.version }}" \
             --out-dir dist \
-            --description "Multi-engine web search with custom engine config support (npx launcher)" \
+            --description "Multi-engine web search — unified interface to nine backends (npx launcher)" \
             --repository "https://github.com/celestia-island/seia" \
             --homepage "https://github.com/celestia-island/seia"
 
