@@ -80,7 +80,48 @@ async fn test_duckduckgo_fetch_content() {
     // Some items may fail to fetch (robots.txt, etc.), but the search itself succeeds.
 }
 
-/// Custom engine — GitHub Code Search via TOML config simulation.
+/// Semantic Scholar — free academic paper search.
+#[tokio::test]
+#[ignore = "requires network access"]
+async fn test_semantic_scholar_smoke() {
+    let result = client()
+        .search("machine learning", Engine::SemanticScholar)
+        .await
+        .expect("Semantic Scholar search should succeed");
+    assert!(!result.items.is_empty(), "should return at least one paper");
+    for item in &result.items {
+        assert!(!item.title.is_empty());
+        assert!(!item.url.is_empty());
+    }
+}
+
+/// OpenAlex — open scholarly index.
+#[tokio::test]
+#[ignore = "requires network access"]
+async fn test_openalex_smoke() {
+    let result = client()
+        .search("deep learning", Engine::OpenAlex)
+        .await
+        .expect("OpenAlex search should succeed");
+    assert!(!result.items.is_empty());
+    for item in &result.items {
+        assert!(!item.title.is_empty());
+    }
+}
+
+/// arXiv — preprint server.
+#[tokio::test]
+#[ignore = "requires network access"]
+async fn test_arxiv_smoke() {
+    let result = client()
+        .search("neural network", Engine::Arxiv)
+        .await
+        .expect("arXiv search should succeed");
+    assert!(!result.items.is_empty());
+    for item in &result.items {
+        assert!(!item.title.is_empty());
+    }
+}
 #[tokio::test]
 #[ignore = "requires GITHUB_TOKEN in env"]
 async fn test_custom_github_search() {

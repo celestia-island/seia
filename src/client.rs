@@ -112,6 +112,18 @@ impl SearchClient {
             Engine::Zhipu => crate::engines_impl::zhipu::search(&self.http, query, &opts).await?,
             Engine::Bocha => crate::engines_impl::bocha::search(&self.http, query, &opts).await?,
             Engine::Metaso => crate::engines_impl::metaso::search(&self.http, query, &opts).await?,
+            Engine::SemanticScholar => {
+                crate::engines_impl::semantic_scholar::search(&self.http, query, &opts).await?
+            }
+            Engine::OpenAlex => {
+                crate::engines_impl::openalex::search(&self.http, query, &opts).await?
+            }
+            Engine::Arxiv => {
+                crate::engines_impl::arxiv::search(&self.http, query, &opts).await?
+            }
+            Engine::Core => {
+                crate::engines_impl::core::search(&self.http, query, &opts).await?
+            }
             Engine::Custom(ref name) => {
                 let def = self
                     .registry

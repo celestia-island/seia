@@ -28,3 +28,18 @@ jobs:
         env:
           HTTPS_PROXY: ""
           HTTP_PROXY: ""
+      - name: Smoke Semantic Scholar
+        run: cargo test --test live_search test_semantic_scholar_smoke --features mcp -- --ignored --test-threads=1 --nocapture
+        env:
+          HTTPS_PROXY: ""
+          HTTP_PROXY: ""
+      - name: Smoke OpenAlex
+        run: cargo test --test live_search test_openalex_smoke --features mcp -- --ignored --test-threads=1 --nocapture
+        env:
+          HTTPS_PROXY: ""
+          HTTP_PROXY: ""
+      - name: Smoke arXiv
+        run: cargo test --test live_search test_arxiv_smoke --features mcp -- --ignored --test-threads=1 --nocapture
+        env:
+          HTTPS_PROXY: ""
+          HTTP_PROXY: ""

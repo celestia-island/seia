@@ -16,6 +16,10 @@ pub enum Engine {
     Zhipu,
     Bocha,
     Metaso,
+    SemanticScholar,
+    OpenAlex,
+    Arxiv,
+    Core,
     /// User-defined custom engine (name from config).
     #[value(skip)]
     Custom(String),
@@ -34,6 +38,10 @@ impl Engine {
             Self::Zhipu => "zhipu",
             Self::Bocha => "bocha",
             Self::Metaso => "metaso",
+            Self::SemanticScholar => "semantic-scholar",
+            Self::OpenAlex => "openalex",
+            Self::Arxiv => "arxiv",
+            Self::Core => "core",
             Self::Custom(name) => name.as_str(),
         }
     }
@@ -48,6 +56,7 @@ impl Engine {
             Self::Zhipu => Some("ZHIPU_API_KEY"),
             Self::Bocha => Some("BOCHA_API_KEY"),
             Self::Metaso => Some("METASO_API_KEY"),
+            Self::Core => Some("CORE_API_KEY"),
             Self::Custom(_) => None,
             _ => None,
         }

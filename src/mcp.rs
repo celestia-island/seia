@@ -195,6 +195,10 @@ fn parse_engine(name: Option<&str>, default: Engine) -> Engine {
         "zhipu" => Engine::Zhipu,
         "bocha" => Engine::Bocha,
         "metaso" => Engine::Metaso,
+        "semantic-scholar" | "semanticscholar" | "s2" => Engine::SemanticScholar,
+        "openalex" | "oa" => Engine::OpenAlex,
+        "arxiv" => Engine::Arxiv,
+        "core" => Engine::Core,
         other => Engine::Custom(other.to_string()),
     }
 }
@@ -203,7 +207,11 @@ fn parse_engine(name: Option<&str>, default: Engine) -> Engine {
 const ENGINES: &[(&str, Option<&str>)] = &[
     ("duckduckgo", None),
     ("wikipedia", None),
+    ("semantic-scholar", None),
+    ("openalex", None),
+    ("arxiv", None),
     ("searxng", Some("SEARXNG_URL")),
+    ("core", Some("CORE_API_KEY")),
     ("tavily", Some("TAVILY_API_KEY")),
     ("bing", Some("BING_SEARCH_API_KEY")),
     ("brave", Some("BRAVE_SEARCH_API_KEY")),

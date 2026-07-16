@@ -1,12 +1,16 @@
 //! Engine implementations — one module per backend.
 
+pub mod arxiv;
 pub mod bing;
 pub mod bocha;
 pub mod brave;
+pub mod core;
 pub mod custom;
 pub mod duckduckgo;
 pub mod metaso;
+pub mod openalex;
 pub mod searxng;
+pub mod semantic_scholar;
 pub mod tavily;
 pub mod wikipedia;
 pub mod zhipu;

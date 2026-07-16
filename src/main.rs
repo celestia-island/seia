@@ -101,21 +101,29 @@ async fn main() -> anyhow::Result<()> {
         }
 
         Command::Engines => {
-            println!("Built-in engines:");
-            println!("  duckduckgo  — Free, HTML scraping, no key needed");
-            println!("  wikipedia   — Free, unlimited, academic knowledge");
-            println!("  searxng     — Self-hosted meta-search (SEARXNG_URL)");
-            println!("  tavily      — AI-optimized API, free 1K/month (TAVILY_API_KEY)");
-            println!("  bing        — Bing Web Search API (BING_SEARCH_API_KEY)");
-            println!("  brave       — Brave Search API (BRAVE_SEARCH_API_KEY)");
-            println!("  zhipu       — 智谱 web_search tool (ZHIPU_API_KEY)");
-            println!("  bocha       — 博查 Web Search API (BOCHA_API_KEY)");
-            println!("  metaso      — 秘塔 Web Search API (METASO_API_KEY)");
+            println!("Free (no key):");
+            println!("  duckduckgo         — DuckDuckGo HTML scraping");
+            println!("  wikipedia          — Wikipedia API, unlimited");
+            println!("  semantic-scholar   — 200M+ academic papers");
+            println!("  openalex           — 250M+ scholarly works");
+            println!("  arxiv              — Preprints (physics, math, CS)");
+            println!();
+            println!("Free (self-hosted):");
+            println!("  searxng            — Meta-search engine (SEARXNG_URL)");
+            println!();
+            println!("Paid / key required:");
+            println!("  core               — Open-access papers (CORE_API_KEY)");
+            println!("  tavily             — AI search API (TAVILY_API_KEY)");
+            println!("  bing               — Bing Web Search (BING_SEARCH_API_KEY)");
+            println!("  brave              — Brave Search (BRAVE_SEARCH_API_KEY)");
+            println!("  zhipu              — 智谱 web_search (ZHIPU_API_KEY)");
+            println!("  bocha              — 博查 Web Search (BOCHA_API_KEY)");
+            println!("  metaso             — 秘塔 Web Search (METASO_API_KEY)");
             if !registry.engines.is_empty() {
-                println!("\nCustom engines (from config):");
+                println!();
+                println!("Custom (from config):");
                 for (name, def) in &registry.engines {
-                    let method = def.method.to_uppercase();
-                    println!("  {name}  — {label} [{method}]", label = def.label);
+                    println!("  {name:<20} — {} [{}]", def.label, def.method.to_uppercase());
                 }
             }
         }
@@ -141,6 +149,10 @@ fn parse_engine(raw: &str) -> Engine {
         "zhipu" => Engine::Zhipu,
         "bocha" => Engine::Bocha,
         "metaso" => Engine::Metaso,
+        "semantic-scholar" | "semanticscholar" | "s2" => Engine::SemanticScholar,
+        "openalex" | "oa" => Engine::OpenAlex,
+        "arxiv" => Engine::Arxiv,
+        "core" => Engine::Core,
         other => Engine::Custom(other.to_string()),
     }
 }
