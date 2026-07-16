@@ -199,6 +199,9 @@ fn parse_engine(name: Option<&str>, default: Engine) -> Engine {
         "openalex" | "oa" => Engine::OpenAlex,
         "arxiv" => Engine::Arxiv,
         "core" => Engine::Core,
+        "crossref" => Engine::CrossRef,
+        "doaj" => Engine::Doaj,
+        "pubmed" | "pm" => Engine::PubMed,
         other => Engine::Custom(other.to_string()),
     }
 }
@@ -210,6 +213,9 @@ const ENGINES: &[(&str, Option<&str>)] = &[
     ("semantic-scholar", None),
     ("openalex", None),
     ("arxiv", None),
+    ("crossref", None),
+    ("pubmed", None),
+    ("doaj", None),
     ("searxng", Some("SEARXNG_URL")),
     ("core", Some("CORE_API_KEY")),
     ("tavily", Some("TAVILY_API_KEY")),

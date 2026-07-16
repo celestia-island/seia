@@ -107,6 +107,9 @@ async fn main() -> anyhow::Result<()> {
             println!("  semantic-scholar   — 200M+ academic papers");
             println!("  openalex           — 250M+ scholarly works");
             println!("  arxiv              — Preprints (physics, math, CS)");
+            println!("  crossref           — 150M+ DOI metadata records");
+            println!("  pubmed             — Biomedical literature");
+            println!("  doaj               — Open-access journal directory");
             println!();
             println!("Free (self-hosted):");
             println!("  searxng            — Meta-search engine (SEARXNG_URL)");
@@ -153,6 +156,9 @@ fn parse_engine(raw: &str) -> Engine {
         "openalex" | "oa" => Engine::OpenAlex,
         "arxiv" => Engine::Arxiv,
         "core" => Engine::Core,
+        "crossref" => Engine::CrossRef,
+        "doaj" => Engine::Doaj,
+        "pubmed" | "pm" => Engine::PubMed,
         other => Engine::Custom(other.to_string()),
     }
 }

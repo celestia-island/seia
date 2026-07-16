@@ -122,6 +122,29 @@ async fn test_arxiv_smoke() {
         assert!(!item.title.is_empty());
     }
 }
+
+/// CrossRef — DOI metadata.
+#[tokio::test]
+#[ignore = "requires network access"]
+async fn test_crossref_smoke() {
+    let result = client()
+        .search("climate change", Engine::CrossRef)
+        .await
+        .expect("CrossRef search should succeed");
+    assert!(!result.items.is_empty());
+}
+
+/// PubMed — biomedical literature.
+#[tokio::test]
+#[ignore = "requires network access"]
+async fn test_pubmed_smoke() {
+    let result = client()
+        .search("cancer immunotherapy", Engine::PubMed)
+        .await
+        .expect("PubMed search should succeed");
+    assert!(!result.items.is_empty());
+}
+
 #[tokio::test]
 #[ignore = "requires GITHUB_TOKEN in env"]
 async fn test_custom_github_search() {

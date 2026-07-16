@@ -43,3 +43,13 @@ jobs:
         env:
           HTTPS_PROXY: ""
           HTTP_PROXY: ""
+      - name: Smoke CrossRef
+        run: cargo test --test live_search test_crossref_smoke --features mcp -- --ignored --test-threads=1 --nocapture
+        env:
+          HTTPS_PROXY: ""
+          HTTP_PROXY: ""
+      - name: Smoke PubMed
+        run: cargo test --test live_search test_pubmed_smoke --features mcp -- --ignored --test-threads=1 --nocapture
+        env:
+          HTTPS_PROXY: ""
+          HTTP_PROXY: ""

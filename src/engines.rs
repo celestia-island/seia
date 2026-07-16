@@ -20,6 +20,9 @@ pub enum Engine {
     OpenAlex,
     Arxiv,
     Core,
+    CrossRef,
+    Doaj,
+    PubMed,
     /// User-defined custom engine (name from config).
     #[value(skip)]
     Custom(String),
@@ -42,6 +45,9 @@ impl Engine {
             Self::OpenAlex => "openalex",
             Self::Arxiv => "arxiv",
             Self::Core => "core",
+            Self::CrossRef => "crossref",
+            Self::Doaj => "doaj",
+            Self::PubMed => "pubmed",
             Self::Custom(name) => name.as_str(),
         }
     }
@@ -57,6 +63,9 @@ impl Engine {
             Self::Bocha => Some("BOCHA_API_KEY"),
             Self::Metaso => Some("METASO_API_KEY"),
             Self::Core => Some("CORE_API_KEY"),
+            Self::CrossRef => None,
+            Self::Doaj => None,
+            Self::PubMed => None,
             Self::Custom(_) => None,
             _ => None,
         }
