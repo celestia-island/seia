@@ -32,7 +32,7 @@ struct Server {
 
 impl Server {
     fn tool_result(text: impl Into<String>) -> CallToolResult {
-        CallToolResult::success(vec![Content::text(text)])
+        CallToolResult::success(vec![ContentBlock::text(text)])
     }
 
     /// Build `SearchOptions` honouring the MCP-level knobs.
