@@ -166,7 +166,7 @@ fn run_pre_request_script(
 
     let mut ctx = Context::default();
 
-    let req_obj = JsObject::default();
+    let req_obj = JsObject::default(ctx.intrinsics());
 
     req_obj
         .create_data_property(js_string!("url"), JsString::from(url), &mut ctx)
@@ -183,16 +183,16 @@ fn run_pre_request_script(
     req_obj
         .create_data_property(
             js_string!("limit"),
-            JsValue::Integer(limit as i32),
+            JsValue::new(limit as i32),
             &mut ctx,
         )
         .map_err(|e| anyhow!("boa: failed to set req.limit: {e}"))?;
 
-    let headers_obj = JsObject::default();
+    let headers_obj = JsObject::default(ctx.intrinsics());
     req_obj
         .create_data_property(
             js_string!("headers"),
-            JsValue::Object(headers_obj),
+            JsValue::new(headers_obj),
             &mut ctx,
         )
         .map_err(|e| anyhow!("boa: failed to set req.headers: {e}"))?;
@@ -203,7 +203,7 @@ fn run_pre_request_script(
 
     ctx.register_global_property(
         js_string!("req"),
-        JsValue::Object(req_obj.clone()),
+        JsValue::new(req_obj.clone()),
         Attribute::all(),
     )
     .map_err(|e| anyhow!("boa: register_global_property failed: {e}"))?;
@@ -218,10 +218,11 @@ fn run_pre_request_script(
         .unwrap_or_else(|| url.to_string());
 
     let mut new_headers: Vec<(String, String)> = Vec::new();
-    if let Ok(JsValue::Object(hdrs)) = req_obj.get(js_string!("headers"), &mut ctx) {
-        if let Ok(prop_keys) = hdrs.own_property_keys(&mut ctx) {
-            for pk in prop_keys {
-                if let Ok(val) = hdrs.get(pk.clone(), &mut ctx) {
+    if let Ok(hdrs_val) = req_obj.get(js_string!("headers"), &mut ctx) {
+        if let Some(hdrs) = hdrs_val.as_object() {
+            if let Ok(prop_keys) = hdrs.own_property_keys(&mut ctx) {
+                for pk in prop_keys {
+                    if let Ok(val) = hdrs.get(pk.clone(), &mut ctx) {
                     let val_str = val
                         .as_string()
                         .map(|s| s.to_std_string_escaped())
@@ -233,6 +234,7 @@ fn run_pre_request_script(
                     new_headers.push((key_str, val_str));
                 }
             }
+        }
         }
     }
 
