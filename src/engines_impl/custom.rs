@@ -181,20 +181,12 @@ fn run_pre_request_script(
         .map_err(|e| anyhow!("boa: failed to set req.query: {e}"))?;
 
     req_obj
-        .create_data_property(
-            js_string!("limit"),
-            JsValue::new(limit as i32),
-            &mut ctx,
-        )
+        .create_data_property(js_string!("limit"), JsValue::new(limit as i32), &mut ctx)
         .map_err(|e| anyhow!("boa: failed to set req.limit: {e}"))?;
 
     let headers_obj = JsObject::default(ctx.intrinsics());
     req_obj
-        .create_data_property(
-            js_string!("headers"),
-            JsValue::new(headers_obj),
-            &mut ctx,
-        )
+        .create_data_property(js_string!("headers"), JsValue::new(headers_obj), &mut ctx)
         .map_err(|e| anyhow!("boa: failed to set req.headers: {e}"))?;
 
     req_obj
@@ -223,18 +215,20 @@ fn run_pre_request_script(
             if let Ok(prop_keys) = hdrs.own_property_keys(&mut ctx) {
                 for pk in prop_keys {
                     if let Ok(val) = hdrs.get(pk.clone(), &mut ctx) {
-                    let val_str = val
-                        .as_string()
-                        .map(|s| s.to_std_string_escaped())
-                        .unwrap_or_default();
-                    let key_str = match &pk {
-                        boa_engine::property::PropertyKey::String(s) => s.to_std_string_escaped(),
-                        other => format!("{other}"),
-                    };
-                    new_headers.push((key_str, val_str));
+                        let val_str = val
+                            .as_string()
+                            .map(|s| s.to_std_string_escaped())
+                            .unwrap_or_default();
+                        let key_str = match &pk {
+                            boa_engine::property::PropertyKey::String(s) => {
+                                s.to_std_string_escaped()
+                            }
+                            other => format!("{other}"),
+                        };
+                        new_headers.push((key_str, val_str));
+                    }
                 }
             }
-        }
         }
     }
 
