@@ -18,7 +18,7 @@ impl Default for SearchClient {
 
 impl SearchClient {
     /// Creates a new search client. Automatically honours `SEIA_PROXY`,
-    /// `HTTPS_PROXY`, and `ALL_PROXY` environment variables (in that order).
+    /// `HTTP_PROXY`, `HTTPS_PROXY`, and `ALL_PROXY` environment variables (in that order).
     ///
     /// # Panics
     ///
@@ -204,9 +204,9 @@ impl Default for SearchOptions {
 }
 
 /// Auto-detect proxy from environment variables.
-/// Checks `SEIA_PROXY` first, then `HTTPS_PROXY`, then `ALL_PROXY`.
+/// Checks `SEIA_PROXY` first, then `HTTP_PROXY`, `HTTPS_PROXY`, then `ALL_PROXY`.
 fn detect_proxy() -> Option<String> {
-    for var in &["SEIA_PROXY", "HTTPS_PROXY", "ALL_PROXY"] {
+    for var in &["SEIA_PROXY", "HTTP_PROXY", "HTTPS_PROXY", "ALL_PROXY"] {
         if let Ok(val) = std::env::var(var) {
             if !val.is_empty() {
                 return Some(val);
