@@ -60,10 +60,13 @@ jobs:
         run: pip install git+https://github.com/celestia-island/celestia-devtools.git
 
       - name: Set up Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
-          node-version: "20"
+          node-version: "22"
           registry-url: https://registry.npmjs.org/
+
+      - name: Upgrade npm for Trusted Publishing
+        run: npm install -g npm@latest
 
       - name: Resolve version
         id: ver
@@ -118,25 +121,17 @@ jobs:
           path: dist/seia${{ matrix.suffix }}
           retention-days: 7
 
-      - name: Debug OIDC + npmrc
-        shell: bash
-        run: |
-          echo "=== .npmrc ==="
-          cat ~/.npmrc 2>/dev/null || echo "(none)"
-          echo "=== npm config ==="
-          npm config list 2>&1 | head -20
-          echo "=== OIDC token claims ==="
-          TOKEN=$(curl -sf -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=npm:registry.npmjs.org" | jq -r .value)
-          echo "$TOKEN" | cut -d. -f2 | base64 -d 2>/dev/null | jq . || echo "(failed to decode)"
-
       - name: Publish subpackage
         shell: bash
         run: |
+          unset NODE_AUTH_TOKEN
+          rm -f "$NPM_CONFIG_USERCONFIG"
+
+          npm --version
           sub="dist/seia${{ matrix.suffix }}"
-          echo "::group::npm pack $sub"
-          (cd "$sub" && npm pack --dry-run)
+          echo "::group::npm publish verbose"
+          (cd "$sub" && npm publish --access public --provenance --loglevel verbose 2>&1 | tail -60)
           echo "::endgroup::"
-          (cd "$sub" && npm publish --access public --provenance)
 
   publish-root:
     name: Publish root @celestia-island/seia to npm
@@ -154,10 +149,13 @@ jobs:
         run: pip install git+https://github.com/celestia-island/celestia-devtools.git
 
       - name: Set up Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
-          node-version: "20"
+          node-version: "22"
           registry-url: https://registry.npmjs.org/
+
+      - name: Upgrade npm for Trusted Publishing
+        run: npm install -g npm@latest
 
       - name: Resolve version
         id: ver
@@ -185,6 +183,8 @@ jobs:
 
       - name: Publish root package
         run: |
+          rm -f "$NPM_CONFIG_USERCONFIG"
+          unset NODE_AUTH_TOKEN
           echo "::group::npm pack (root)"
           (cd dist && npm pack --dry-run)
           echo "::endgroup::"
