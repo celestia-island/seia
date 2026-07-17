@@ -42,7 +42,7 @@ rmcp = { version = "^2", optional = true, features = ["server", "transport-io", 
 schemars = { version = "^1", optional = true, features = ["derive"] }
 # Custom engine config
 toml = "^0.8"
-jsonpath-rust = "^0.7"
+jsonpath-rust = "^1.0"
 dirs = "^6"
 # Explicit crypto-provider init for rustls (reqwest uses rustls-no-provider).
 rustls = { version = "^0.23", default-features = false, features = ["ring", "std", "tls12", "logging"] }
