@@ -92,13 +92,18 @@ pub async fn search(
 /// Run the JSONPath query and map each element to a `SearchItem`.
 fn extract_items(json: &Value, def: &CustomEngineDef) -> Result<Vec<SearchItem>> {
     let results: Vec<Value> = if let Some(ref path) = def.result_path {
-        let path = JsonPath::<Value>::try_from(path.as_str())
+        let found = json
+            .query(path)
             .map_err(|e| anyhow!("invalid JSONPath '{}': {e}", path))?;
-        let found = path.find(json);
-        if found.is_array() {
-            found.as_array().unwrap().to_vec()
+        if found.len() == 1 && found[0].is_array() {
+            found[0]
+                .as_array()
+                .unwrap()
+                .iter()
+                .map(|v| (*v).clone())
+                .collect()
         } else {
-            vec![found]
+            found.into_iter().cloned().collect()
         }
     } else if let Some(arr) = json.as_array() {
         arr.clone()
