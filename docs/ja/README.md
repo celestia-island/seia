@@ -101,3 +101,24 @@ just test-proxy  # run tests through localhost:7890 proxy (see tests/README)
 ## ライセンス
 
 SySL-1.0（Synthetic Source License）。詳しくは [LICENSE](https://sysl.celestia.world) を参照してください。
+
+## MCP Server Deployment
+
+> (English section — translation pending)
+
+For production MCP deployments, use an **auto-restart wrapper** to keep the server alive across updates without interrupting the client session.
+
+### Recommended launcher
+
+#!/bin/bash
+while true; do
+  /path/to/seia mcp
+  sleep 0.2
+done
+
+### How it works
+
+1. The wrapper runs `seia mcp` in a `while true` loop.
+2. If the process exits, it restarts within 0.2 seconds.
+3. To update: `kill $(pgrep -f "seia mcp" | head -1)`
+4. For managed restarts, use [malkuth](https://github.com/celestia-island/malkuth) as a supervised watcher.
