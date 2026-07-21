@@ -107,13 +107,11 @@ just test-proxy  # run tests through localhost:7890 proxy (see tests/README)
 
 SySL-1.0 (Synthetic Source License). 자세한 내용은 [LICENSE](https://sysl.celestia.world)를 참조하세요.
 
-## MCP Server Deployment
+## MCP 서버 배포
 
-> (English section — translation pending)
+프로덕션 MCP 배포에서는 **자동 재시작 래퍼**를 사용하여 업데이트 중에도 서버가 계속 실행되도록 하고 클라이언트 세션이 중단되지 않도록 합니다.
 
-For production MCP deployments, use an **auto-restart wrapper** to keep the server alive across updates without interrupting the client session.
-
-### Recommended launcher
+### 권장 실행기
 
 #!/bin/bash
 while true; do
@@ -121,8 +119,8 @@ while true; do
   sleep 0.2
 done
 
-### How it works
+### 작동 방식
 
-1. The wrapper runs `seia mcp` in a `while true` loop.
-2. If the process exits, it restarts within 0.2 seconds.
-3. To update: `kill $(pgrep -f "seia mcp" | head -1)`
+1. 래퍼는 `while true` 루프에서 `seia mcp`를 실행합니다.
+2. 프로세스가 종료되면 0.2초 이내에 다시 시작됩니다.
+3. 업데이트 방법: `kill $(pgrep -f "seia mcp" | head -1)`
