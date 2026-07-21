@@ -16,6 +16,7 @@ import "./celestia-devtools.just"
 default:
     @just --list
 fmt:
+    just fmt-toml
     cargo fmt --all
 fmt-check:
     cargo fmt --all -- --check

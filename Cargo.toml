@@ -24,31 +24,31 @@ name = "seia"
 path = "src/lib.rs"
 
 [dependencies]
-tokio = { version = "^1", features = ["full"] }
-reqwest = { version = "^0.13", features = ["json", "rustls-no-provider", "socks", "query"], default-features = false }
-serde = { version = "^1", features = ["derive"] }
-serde_json = "^1"
+
 anyhow = "^1"
-clap = { version = "^4", features = ["derive"] }
-tracing = "^0.1"
-tracing-subscriber = { version = "^0.3", features = ["env-filter"] }
 async-trait = "^0.1"
-url = "^2"
-regex = "^1"
-scraper = "^0.27"
-tokio-stream = "^0.1"
-# MCP (optional, for standalone MCP server)
-rmcp = { version = "^2", optional = true, features = ["server", "transport-io", "macros", "schemars"] }
-schemars = { version = "^1", optional = true, features = ["derive"] }
-# Custom engine config
-toml = "^1.1"
-jsonpath-rust = "^1.0"
-dirs = "^6"
-# Explicit crypto-provider init for rustls (reqwest uses rustls-no-provider).
-rustls = { version = "^0.23", default-features = false, features = ["ring", "std", "tls12", "logging"] }
 # Optional: Boa JS engine for pre-request scripts in custom engines
 boa_engine = { version = "^0.21", optional = true }
-
+clap = { version = "^4", features = ["derive"] }
+dirs = "^6"
+jsonpath-rust = "^1.0"
+regex = "^1"
+reqwest = { version = "^0.13", features = ["json", "rustls-no-provider", "socks", "query"], default-features = false }
+# MCP (optional, for standalone MCP server)
+rmcp = { version = "^2", optional = true, features = ["server", "transport-io", "macros", "schemars"] }
+# Explicit crypto-provider init for rustls (reqwest uses rustls-no-provider).
+rustls = { version = "^0.23", default-features = false, features = ["ring", "std", "tls12", "logging"] }
+schemars = { version = "^1", optional = true, features = ["derive"] }
+scraper = "^0.27"
+serde = { version = "^1", features = ["derive"] }
+serde_json = "^1"
+tokio = { version = "^1", features = ["full"] }
+tokio-stream = "^0.1"
+# Custom engine config
+toml = "^1.1"
+tracing = "^0.1"
+tracing-subscriber = { version = "^0.3", features = ["env-filter"] }
+url = "^2"
 [features]
 default = []
 # Standalone MCP (Model Context Protocol) server exposing the search tools over
@@ -59,4 +59,5 @@ mcp = ["dep:rmcp", "dep:schemars", "tokio/io-std"]
 pre-request-script = ["dep:boa_engine"]
 
 [dev-dependencies]
+
 tokio-test = "^0.4"
