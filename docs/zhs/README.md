@@ -101,13 +101,11 @@ just test-proxy  # run tests through localhost:7890 proxy (see tests/README)
 
 SySL-1.0（Synthetic Source License）。详见 [LICENSE](https://sysl.celestia.world)。
 
-## MCP Server Deployment
+## MCP 服务器部署
 
-> (English section — translation pending)
+对于生产环境的 MCP 部署，建议使用**自动重启包装脚本**，以便在更新时保持服务器运行，不中断客户端会话。
 
-For production MCP deployments, use an **auto-restart wrapper** to keep the server alive across updates without interrupting the client session.
-
-### Recommended launcher
+### 推荐的启动器
 
 #!/bin/bash
 while true; do
@@ -115,8 +113,8 @@ while true; do
   sleep 0.2
 done
 
-### How it works
+### 工作原理
 
-1. The wrapper runs `seia mcp` in a `while true` loop.
-2. If the process exits, it restarts within 0.2 seconds.
-3. To update: `kill $(pgrep -f "seia mcp" | head -1)`
+1. 包装脚本在 `while true` 循环中运行 `seia mcp`。
+2. 如果进程退出，会在 0.2 秒内重新启动。
+3. 更新方式：`kill $(pgrep -f "seia mcp" | head -1)`
