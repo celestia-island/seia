@@ -1,6 +1,6 @@
 [package]
 name = "seia"
-version = "0.1.4"
+version = "0.1.5"
 edition = "2024"
 rust-version = "1.85"
 authors = ["langyo <langyo.china@gmail.com>"]
@@ -35,7 +35,7 @@ jsonpath-rust = "^1.0"
 regex = "^1"
 reqwest = { version = "^0.13", features = ["json", "rustls-no-provider", "socks", "query"], default-features = false }
 # MCP (optional, for standalone MCP server)
-rmcp = { version = "^2", optional = true, features = ["server", "transport-io", "macros", "schemars"] }
+rmcp = { version = "^3", optional = true, features = ["server", "transport-io", "macros", "schemars"] }
 # Explicit crypto-provider init for rustls (reqwest uses rustls-no-provider).
 rustls = { version = "^0.23", default-features = false, features = ["ring", "std", "tls12", "logging"] }
 schemars = { version = "^1", optional = true, features = ["derive"] }
