@@ -129,6 +129,12 @@ jobs:
 
           npm --version
           sub="dist/seia${{ matrix.suffix }}"
+          pkg="@celestia-island/seia${{ matrix.suffix }}"
+          v="${{ steps.ver.outputs.version }}"
+          if npm view "$pkg@$v" version >/dev/null 2>&1; then
+            echo "::notice::$pkg@$v already published, skipping"
+            exit 0
+          fi
           echo "::group::npm publish verbose"
           (cd "$sub" && npm publish --access public --provenance --loglevel verbose 2>&1 | tail -60)
           echo "::endgroup::"
