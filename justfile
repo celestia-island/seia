@@ -5,8 +5,11 @@ set shell := ["bash", "-c"]
 # "could not find cygpath executable". To avoid that, every multi-line recipe
 # below uses the `[script('bash')]` attribute instead of a `#!` shebang:
 # `[script]` resolves the interpreter via PATH (PATHEXT-aware) and never calls
-# cygpath. See casey/just#2828 and the just manual (Script Recipes).
-set windows-shell := ["pwsh.exe", "-NoLogo", "-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", "[Console]::OutputEncoding = [System.Text.Encoding]::UTF8; $PSDefaultParameterValues['*:Encoding'] = 'utf8';"]
+# Windows: PowerShell (the 5.1 floor ships with every Windows; pwsh 7 is
+# NOT assumed). Linewise recipes must stay PS-5.1-safe: no `&&` chains,
+# `cd X; cmd` instead of `cd X && cmd`. Bash-only recipes use
+# [script('bash')] and need Git Bash (or WSL) when actually run.
+set windows-shell := ["powershell.exe", "-NoLogo", "-NoProfile", "-Command", "[Console]::OutputEncoding=[System.Text.Encoding]::UTF8; $PSDefaultParameterValues['*:Encoding']='utf8';"]
 # `set lists` enables which() (used by the imported celestia-devtools.just);
 # `set unstable` gates it.
 set unstable
@@ -26,8 +29,13 @@ clippy:
     cargo clippy --all-targets -- -D warnings
 test:
     cargo test --all-features
+[unix]
 test-proxy:
     SEIA_TEST_PROXY=http://localhost:7890 cargo test
+
+[windows]
+test-proxy:
+    $env:SEIA_TEST_PROXY='http://localhost:7890'; cargo test
 build:
     cargo build --all-features
 ci: fmt-check clippy test
