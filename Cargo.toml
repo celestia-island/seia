@@ -28,7 +28,7 @@ path = "src/lib.rs"
 anyhow = "^1"
 async-trait = "^0.1"
 # Optional: Boa JS engine for pre-request scripts in custom engines
-boa_engine = { version = "^0.21", optional = true }
+boa_engine = { version = "^0.22", optional = true }
 clap = { version = "^4", features = ["derive"] }
 dirs = "^6"
 jsonpath-rust = "^1.0"
