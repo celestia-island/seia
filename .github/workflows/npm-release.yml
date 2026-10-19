@@ -16,6 +16,11 @@ name: npm Release
 #
 # The version is derived from the pushed tag (vX.Y.Z → X.Y.Z) and is shared by
 # the root package and every subpackage so they are released in lockstep.
+#
+# The Linux lane is static musl for both CPU classes, published under the
+# generic `-linux-x64` / `-linux-arm64` names: one artifact per CPU class with
+# no glibc floor, running unchanged on Debian/Ubuntu/Alpine/distroless hosts.
+# The macOS and Windows binaries are native.
 
 on:
   push:
@@ -38,12 +43,11 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { os: ubuntu-latest,  target: x86_64-unknown-linux-gnu,  suffix: -linux-x64 }
-          - { os: ubuntu-latest,  target: aarch64-unknown-linux-gnu, suffix: -linux-arm64 }
-          - { os: ubuntu-latest,  target: x86_64-unknown-linux-musl, suffix: -linux-x64-musl }
-          - { os: macos-latest,   target: aarch64-apple-darwin,      suffix: -darwin-arm64 }
-          - { os: macos-latest,       target: x86_64-apple-darwin,       suffix: -darwin-x64 }
-          - { os: windows-latest, target: x86_64-pc-windows-msvc,    suffix: -win32-x64 }
+          - { os: ubuntu-latest,  target: x86_64-unknown-linux-musl,  platform: x86_64-unknown-linux-gnu,  suffix: -linux-x64 }
+          - { os: ubuntu-latest,  target: aarch64-unknown-linux-musl, platform: aarch64-unknown-linux-gnu, suffix: -linux-arm64 }
+          - { os: macos-latest,   target: aarch64-apple-darwin,      platform: aarch64-apple-darwin,    suffix: -darwin-arm64 }
+          - { os: macos-latest,       target: x86_64-apple-darwin,       platform: x86_64-apple-darwin,       suffix: -darwin-x64 }
+          - { os: windows-latest, target: x86_64-pc-windows-msvc,    platform: x86_64-pc-windows-msvc,  suffix: -win32-x64 }
     steps:
       - uses: actions/checkout@v7
       - uses: dtolnay/rust-toolchain@stable
@@ -80,35 +84,38 @@ jobs:
           echo "version=$v" >> "$GITHUB_OUTPUT"
           echo "publishing $v"
 
-      # Build with the mcp feature so `seia mcp` ships in the binary.
-      - name: Setup cross-compilation toolchains
+      # Static musl is the only Linux lane that does not pin a glibc floor:
+      # zig supplies the cross linker for both x86_64 and aarch64 musl.
+      - name: Install zig + cargo-zigbuild
         if: runner.os == 'Linux'
         shell: bash
         run: |
-          case "${{ matrix.target }}" in
-            aarch64-unknown-linux-gnu)
-              sudo apt-get update -qq && sudo apt-get install -y -qq gcc-aarch64-linux-gnu
-              echo "CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=aarch64-linux-gnu-gcc" >> "$GITHUB_ENV"
-              ;;
-            x86_64-unknown-linux-musl)
-              sudo apt-get update -qq && sudo apt-get install -y -qq musl-tools
-              echo "CARGO_TARGET_X86_64_UNKNOWN_LINUX_MUSL_LINKER=x86_64-linux-musl-gcc" >> "$GITHUB_ENV"
-              ;;
-          esac
+          pip install ziglang
+          cargo install cargo-zigbuild --locked
 
+      # Build with the mcp feature so `seia mcp` ships in the binary.
       - name: Build (release)
-        run: cargo build --release --features mcp --target ${{ matrix.target }}
+        shell: bash
+        run: |
+          if [ "${{ runner.os }}" = "Linux" ]; then
+            cargo zigbuild --release --features mcp --target ${{ matrix.target }}
+          else
+            cargo build --release --features mcp --target ${{ matrix.target }}
+          fi
 
       - name: Stage subpackage
         shell: bash
         run: |
           bin="target/${{ matrix.target }}/release/seia"
           [ "${{ matrix.target }}" = "x86_64-pc-windows-msvc" ] && bin="${bin}.exe"
+          # The Linux binary is built for musl but published under the generic
+          # platform name: one static artifact per CPU class, no -musl twin and
+          # no glibc variant. `platform` only selects the os/cpu/suffix mapping.
           celestia-devtools npm-dist \
             --name seia \
             --version "${{ steps.ver.outputs.version }}" \
             --binary "$bin" \
-            --rust-target "${{ matrix.target }}" \
+            --rust-target "${{ matrix.platform }}" \
             --out-dir dist \
             --description "Multi-engine web search — unified interface to nine backends (npx launcher)" \
             --repository "https://github.com/celestia-island/seia" \
@@ -176,7 +183,7 @@ jobs:
 
       - name: Assemble root package
         run: |
-          for sfx in -linux-x64 -linux-arm64 -linux-x64-musl -darwin-arm64 -darwin-x64 -win32-x64; do
+          for sfx in -linux-x64 -linux-arm64 -darwin-arm64 -darwin-x64 -win32-x64; do
             mkdir -p "dist/seia${sfx}"
           done
           celestia-devtools npm-dist \
