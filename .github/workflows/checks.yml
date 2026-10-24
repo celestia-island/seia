@@ -3,9 +3,9 @@ name: checks
 on:
   workflow_dispatch:
   push:
-    branches: [dev, master]
+    branches: [master]
   pull_request:
-    branches: [dev, master]
+    branches: [master]
 
 jobs:
   check:
