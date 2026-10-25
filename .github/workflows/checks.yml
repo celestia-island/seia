@@ -22,11 +22,6 @@ jobs:
       - uses: dtolnay/rust-toolchain@stable
         with:
           components: rustfmt, clippy
-      - uses: actions/cache@v6
-        with:
-          path: |
-            target
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.toml') }}
       - name: Format check
         run: cargo fmt --all -- --check
       - name: Clippy
