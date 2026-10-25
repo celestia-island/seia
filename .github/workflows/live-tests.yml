@@ -12,11 +12,6 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - uses: dtolnay/rust-toolchain@stable
-      - uses: actions/cache@v6
-        with:
-          path: |
-            target
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.toml') }}
       - name: Smoke DuckDuckGo
         run: cargo test --test live_search test_duckduckgo_smoke --features mcp -- --ignored --test-threads=1 --nocapture
         env:
