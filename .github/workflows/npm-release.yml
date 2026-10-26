@@ -61,6 +61,7 @@ jobs:
     name: Build + publish @celestia-island/seia${{ matrix.suffix }} to npm
     needs: guard
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 300
     strategy:
       fail-fast: false
       matrix:
@@ -172,6 +173,7 @@ jobs:
     name: Publish root @celestia-island/seia to npm
     needs: [guard, build-subpackage]
     runs-on: ubuntu-latest
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@v7
 
