@@ -38,6 +38,14 @@ enum Command {
     #[command(name = "engines-reset")]
     EnginesReset,
 
+    /// Run the HTTP search service (`seia_search_v1` protocol)
+    #[cfg(feature = "serve")]
+    Serve {
+        /// Bind address (default: $SEIA_BIND or 127.0.0.1:3013)
+        #[arg(long)]
+        bind: Option<String>,
+    },
+
     #[cfg(feature = "mcp")]
     Mcp,
 }
@@ -145,6 +153,11 @@ async fn main() -> anyhow::Result<()> {
             Ok(dir) => println!("Reset built-in engine configs in {}", dir.display()),
             Err(e) => eprintln!("Error: {e}"),
         },
+
+        #[cfg(feature = "serve")]
+        Command::Serve { bind } => {
+            seia::serve::run(bind).await?;
+        }
 
         #[cfg(feature = "mcp")]
         Command::Mcp => {

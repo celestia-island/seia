@@ -127,6 +127,18 @@ snippet_field = "abstract"
 builtin = true
 help = "Open-access papers (free key at core.ac.uk)"
 
+[engines.deepseek]
+label = "DeepSeek Search"
+method = "_builtin_deepseek"
+builtin = true
+help = "DeepSeek Search API (DEEPSEEK_API_KEY)"
+
+[engines.baidu]
+label = "Baidu AI Search"
+method = "_builtin_baidu"
+builtin = true
+help = "百度 AI 搜索 / 千帆 (BAIDU_API_KEY)"
+
 [engines.tavily]
 label = "Tavily"
 method = "POST"

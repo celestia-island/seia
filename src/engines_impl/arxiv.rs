@@ -64,6 +64,7 @@ fn parse_atom_entries(xml: &str) -> Vec<SearchItem> {
                 url,
                 snippet,
                 content: None,
+                ..Default::default()
             });
         }
     }

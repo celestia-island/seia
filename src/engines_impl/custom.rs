@@ -122,6 +122,7 @@ fn extract_items(json: &Value, def: &CustomEngineDef) -> Result<Vec<SearchItem>>
                 url,
                 snippet,
                 content: None,
+                ..Default::default()
             })
         })
         .collect();

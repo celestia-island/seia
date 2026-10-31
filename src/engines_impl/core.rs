@@ -4,26 +4,30 @@
 //! Set `CORE_API_KEY` environment variable.
 //! API docs: <https://api.core.ac.uk/docs/>
 
-use anyhow::{Result, anyhow};
+use anyhow::Result;
 use serde::Deserialize;
 
 use crate::{
-    client::SearchOptions,
+    client::{EngineConfig, SearchOptions},
+    engines::Engine,
     engines_impl::EngineOutput,
     result::{SearchItem, SearchMode},
 };
+
+const KEY_HINT: &str = "Get one at https://core.ac.uk/services/api";
 
 pub async fn search(
     http: &reqwest::Client,
     query: &str,
     opts: &SearchOptions,
+    cfg: &EngineConfig,
 ) -> Result<EngineOutput> {
-    let api_key = std::env::var("CORE_API_KEY")
-        .map_err(|_| anyhow!("CORE_API_KEY not set. Get one at https://core.ac.uk/services/api"))?;
+    let api_key = cfg.resolve_api_key(&Engine::Core, KEY_HINT)?;
 
     let limit = opts.limit.unwrap_or(10).min(100);
+    let base_url = cfg.resolve_base_url(&Engine::Core)?;
     let url = format!(
-        "https://api.core.ac.uk/v3/search/works?q={}&limit={}&offset=0",
+        "{base_url}/v3/search/works?q={}&limit={}&offset=0",
         crate::utils::urlencode_query(query),
         limit
     );
@@ -44,6 +48,7 @@ pub async fn search(
             url: w.download_url.unwrap_or(w.source_url),
             snippet: w.r#abstract,
             content: None,
+            ..Default::default()
         })
         .collect();
 

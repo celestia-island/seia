@@ -2,14 +2,19 @@
 //!
 //! Free tier: 1000 queries/month. Set `TAVILY_API_KEY` env var.
 
-use anyhow::{Result, anyhow};
+use anyhow::Result;
 use serde::Deserialize;
 
 use crate::{
-    client::SearchOptions,
+    client::{EngineConfig, SearchOptions},
+    engines::Engine,
     engines_impl::EngineOutput,
     result::{SearchItem, SearchMode},
 };
+
+/// Search path appended to the (configurable) base URL.
+const SEARCH_PATH: &str = "/search";
+const KEY_HINT: &str = "Get one at https://tavily.com";
 
 /// Search with the Tavily Search API.
 ///
@@ -21,9 +26,10 @@ pub async fn search(
     http: &reqwest::Client,
     query: &str,
     _opts: &SearchOptions,
+    cfg: &EngineConfig,
 ) -> Result<EngineOutput> {
-    let api_key = std::env::var("TAVILY_API_KEY")
-        .map_err(|_| anyhow!("TAVILY_API_KEY not set. Get one at https://tavily.com"))?;
+    let api_key = cfg.resolve_api_key(&Engine::Tavily, KEY_HINT)?;
+    let endpoint = format!("{}{SEARCH_PATH}", cfg.resolve_base_url(&Engine::Tavily)?);
 
     let body = serde_json::json!({
         "api_key": api_key,
@@ -33,7 +39,10 @@ pub async fn search(
     });
 
     let resp: TavilyResponse = http
-        .post("https://api.tavily.com/search")
+        .post(&endpoint)
+        // Newer Tavily accounts authenticate with a bearer token; the body
+        // `api_key` is kept for API-compatible gateways that still expect it.
+        .bearer_auth(&api_key)
         .json(&body)
         .send()
         .await?
@@ -48,6 +57,7 @@ pub async fn search(
             url: r.url,
             snippet: Some(r.content),
             content: None,
+            ..Default::default()
         })
         .collect();
 

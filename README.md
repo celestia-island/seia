@@ -104,6 +104,69 @@ their API-key env vars). Wire it into an MCP client:
 Set `SEIA_PROXY` to route search requests through a proxy
 (e.g. `http://localhost:7890`); `HTTPS_PROXY` / `HTTP_PROXY` are also honoured.
 
+## HTTP search service (`seia serve`)
+
+`seia serve` exposes the engine roster over HTTP so another service (e.g. the
+`arona` agent gateway) can run a provider chain without embedding seia.
+
+Build with the `serve` feature (`just build` and the release workflows use
+`--all-features`, so this is already on) and run it:
+
+```bash
+# defaults: bind 127.0.0.1:3013, no bearer token required when SEIA_TOKEN is unset
+seia serve
+
+# explicit bind + bearer token
+SEIA_BIND=127.0.0.1:3013 SEIA_TOKEN='<your-token>' seia serve
+```
+
+`POST /v1/search` runs a provider chain in order and returns the first provider
+that produced results; every attempt (ok/failed, duration, error) is reported:
+
+```bash
+curl -s http://127.0.0.1:3013/v1/search \
+  -H 'Authorization: Bearer <your-token>' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "query": "翁法罗斯",
+    "count": 8,
+    "need_content": false,
+    "ori_question": "翁法罗斯是什么？",
+    "locale": "zh-CN",
+    "chain": [
+      {"provider": "deepseek", "protocol": "deepseek_search_v1",
+       "base_url": "https://api.deepseek.com", "api_key": "<your-key>"},
+      {"provider": "baidu", "protocol": "baidu_ai_search_v1",
+       "base_url": "https://qianfan.baidubce.com", "api_key": "<your-key>"}
+    ]
+  }'
+```
+
+Response: `{query, provider, engine, protocol, count, took_ms, results, attempts}`
+where each result is the normalized shape (`title`, `url`, `snippet`, `summary`,
+`content`, `site_name`, `site_icon`, `date`, `authority`, `rerank_score`,
+`engine`). Errors: `400` bad request, `401` missing/invalid bearer token,
+`502` every provider failed (`{"error":{"code":"search_failed",…,"attempts":[…]}}`).
+Provider protocols are dispatched by name (`deepseek_search_v1`,
+`baidu_ai_search_v1`, `tavily_search_v1`, `brave_search_v1`, `bing_search_v1`,
+`bocha_search_v1`, `metaso_search_v1`, `zhipu_search_v1`, `searxng_search_v1`,
+`duckduckgo_search_v1`, `wikipedia_search_v1`); an unknown protocol fails that
+attempt with `unsupported_protocol` and the chain continues.
+
+`GET /v1/engines` returns `{engines:[{id, protocol, needs_key, env_var,
+default_base_url, capabilities}], default_chain:[…]}` and `GET /health` is an
+unauthenticated liveness probe.
+
+| Env var | Default | Meaning |
+|---|---|---|
+| `SEIA_BIND` | `127.0.0.1:3013` | Listen address (`--bind` overrides) |
+| `SEIA_TOKEN` | unset | When set, `/v1/*` requires `Authorization: Bearer <token>` |
+| `SEIA_DEFAULT_CHAIN` | `deepseek,baidu,duckduckgo,wikipedia` | Chain used when a request omits `chain` |
+
+Chain entries carry plaintext credentials by design (caller → seia over
+loopback); seia never logs, echoes or serializes the caller-supplied `api_key`,
+and scrubs it from attempt errors.
+
 ## Development
 
 ```bash
@@ -122,6 +185,8 @@ just test-proxy  # run tests through localhost:7890 proxy (see tests/integration
 | [Tavily](https://docs.tavily.com/) | `TAVILY_API_KEY` |
 | [Bing](https://learn.microsoft.com/en-us/bing/search-apis/bing-web-search/) | `BING_SEARCH_API_KEY` |
 | [Brave](https://api.search.brave.com/app/documentation) | `BRAVE_SEARCH_API_KEY` |
+| [DeepSeek Search](https://www.deepseek.com/) | `DEEPSEEK_API_KEY` |
+| [百度 AI 搜索 (Qianfan)](https://qianfan.cloud.baidu.com/) | `BAIDU_API_KEY` |
 | [秘塔 (MetaSo)](https://metaso.cn/search-api/playground) | `METASO_API_KEY` |
 | [智谱 (Zhipu)](https://docs.bigmodel.cn/cn/guide/tools/web-search) | `ZHIPU_API_KEY` |
 | [博查 (Bocha)](https://open.bochaai.com/docs) | `BOCHA_API_KEY` |

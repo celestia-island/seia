@@ -59,6 +59,7 @@ pub async fn search(
                 url: format!("https://pubmed.ncbi.nlm.nih.gov/{uid}"),
                 snippet: doc.elocationid.clone(),
                 content: None,
+                ..Default::default()
             })
         })
         .collect();

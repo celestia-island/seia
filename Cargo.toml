@@ -27,6 +27,10 @@ path = "src/lib.rs"
 
 anyhow = "^1"
 async-trait = "^0.1"
+# Optional: HTTP service mode (`seia serve`). Kept optional so the plain CLI
+# binary stays lean; enable with the `serve` feature (always on in the
+# `--all-features` builds used by `just build` and the release workflows).
+axum = { version = "^0.8", optional = true }
 # Optional: Boa JS engine for pre-request scripts in custom engines
 boa_engine = { version = "^0.22", optional = true }
 clap = { version = "^4", features = ["derive"] }
@@ -57,6 +61,9 @@ mcp = ["dep:rmcp", "dep:schemars", "tokio/io-std"]
 # Enable pre-request JavaScript scripting (Postman-style) in custom engines.
 # Pulls in the Boa JS engine (~5 MB extra binary size).
 pre-request-script = ["dep:boa_engine"]
+# HTTP service mode: `seia serve` exposing POST /v1/search + GET /v1/engines
+# (the `seia_search_v1` protocol consumed by arona). Pulls in axum.
+serve = ["dep:axum"]
 
 [dev-dependencies]
 

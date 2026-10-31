@@ -44,6 +44,7 @@ pub async fn search(
             url: r.url,
             snippet: Some(r.content),
             content: None,
+            ..Default::default()
         })
         .collect();
 

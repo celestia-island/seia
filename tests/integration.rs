@@ -139,6 +139,7 @@ mod tests {
                 url: "https://example.com".to_string(),
                 snippet: Some("A test snippet".to_string()),
                 content: None,
+                ..Default::default()
             }],
             elapsed_ms: 42,
         };

@@ -13,12 +13,15 @@ use anyhow::{Result, anyhow};
 use serde::{Deserialize, Serialize};
 
 use crate::{
-    client::SearchOptions,
+    client::{EngineConfig, SearchOptions},
+    engines::Engine,
     engines_impl::EngineOutput,
     result::{SearchItem, SearchMode},
 };
 
-const ENDPOINT: &str = "https://open.bigmodel.cn/api/paas/v4/web_search";
+/// Search path appended to the (configurable) base URL.
+const SEARCH_PATH: &str = "/api/paas/v4/web_search";
+const KEY_HINT: &str = "Get one at https://bigmodel.cn/";
 
 /// Which backing search engine Zhipu should route the query to.
 ///
@@ -58,9 +61,10 @@ pub async fn search(
     http: &reqwest::Client,
     query: &str,
     opts: &SearchOptions,
+    cfg: &EngineConfig,
 ) -> Result<EngineOutput> {
-    let api_key = std::env::var("ZHIPU_API_KEY")
-        .map_err(|_| anyhow!("ZHIPU_API_KEY not set. Get one at https://bigmodel.cn/"))?;
+    let api_key = cfg.resolve_api_key(&Engine::Zhipu, KEY_HINT)?;
+    let endpoint = format!("{}{SEARCH_PATH}", cfg.resolve_base_url(&Engine::Zhipu)?);
 
     let engine = match std::env::var("ZHIPU_SEARCH_ENGINE").ok().as_deref() {
         Some("search_pro") => ZhipuSearchEngine::Pro,
@@ -80,7 +84,7 @@ pub async fn search(
     };
 
     let resp = http
-        .post(ENDPOINT)
+        .post(&endpoint)
         .bearer_auth(&api_key)
         .json(&body)
         .send()
@@ -106,6 +110,7 @@ pub async fn search(
             url: r.link,
             snippet: Some(r.content).filter(|s| !s.is_empty()),
             content: None,
+            ..Default::default()
         })
         .collect();
 
@@ -187,6 +192,7 @@ mod tests {
                 url: r.link,
                 snippet: Some(r.content).filter(|s| !s.is_empty()),
                 content: None,
+                ..Default::default()
             })
             .collect();
         assert_eq!(items.len(), 2);
