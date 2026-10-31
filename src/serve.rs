@@ -264,24 +264,49 @@ async fn search_handler(
     let started = Instant::now();
     match run_chain(&cfg.client, &request, count, &chain).await {
         Ok(outcome) => {
+            // Served-request evidence for the caller side (arona → seia → upstream).
+            // NEVER log the query text or any credential: only lengths + labels.
+            let elapsed = elapsed_ms(started);
+            tracing::info!(
+                target: "seia::serve",
+                event = "search_request",
+                query_len = request.query.chars().count(),
+                chain_len = chain.len(),
+                provider = %outcome.provider,
+                engine = %outcome.engine,
+                count = outcome.items.len(),
+                took_ms = elapsed,
+                "seia_search served"
+            );
             let body = json!({
                 "query": request.query,
                 "provider": outcome.provider,
                 "engine": outcome.engine.as_str(),
                 "protocol": outcome.protocol,
                 "count": outcome.items.len(),
-                "took_ms": elapsed_ms(started),
+                "took_ms": elapsed,
                 "results": outcome.items,
                 "attempts": outcome.attempts,
             });
             (StatusCode::OK, Json(body)).into_response()
         }
-        Err(failure) => error_response_with_attempts(
-            StatusCode::BAD_GATEWAY,
-            "search_failed",
-            failure.message,
-            failure.attempts,
-        ),
+        Err(failure) => {
+            tracing::warn!(
+                target: "seia::serve",
+                event = "search_failed",
+                query_len = request.query.chars().count(),
+                chain_len = chain.len(),
+                attempts = failure.attempts.len(),
+                took_ms = elapsed_ms(started),
+                "seia_search failed"
+            );
+            error_response_with_attempts(
+                StatusCode::BAD_GATEWAY,
+                "search_failed",
+                failure.message,
+                failure.attempts,
+            )
+        }
     }
 }
 
