@@ -52,7 +52,8 @@ struct SearchArgs {
     /// The search query.
     query: String,
     /// Engine name: duckduckgo, wikipedia, searxng, tavily, bing, brave,
-    /// zhipu, bocha, metaso. Defaults to duckduckgo (no key needed).
+    /// zhipu, bocha, metaso, deepseek, baidu. Defaults to duckduckgo (no key
+    /// needed).
     engine: Option<String>,
     /// Maximum results to return (default 10).
     limit: Option<usize>,
@@ -206,6 +207,8 @@ const ENGINES: &[(&str, Option<&str>)] = &[
     ("zhipu", Some("ZHIPU_API_KEY")),
     ("bocha", Some("BOCHA_API_KEY")),
     ("metaso", Some("METASO_API_KEY")),
+    ("deepseek", Some("DEEPSEEK_API_KEY")),
+    ("baidu", Some("BAIDU_API_KEY")),
 ];
 
 // ── public entry point ───────────────────────────────

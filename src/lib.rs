@@ -12,12 +12,19 @@ pub mod extractor;
 #[cfg(feature = "mcp")]
 pub mod mcp;
 pub mod result;
+#[cfg(feature = "serve")]
+pub mod serve;
+#[cfg(test)]
+mod test_support;
 pub mod utils;
 
-pub use client::{SearchClient, SearchOptions};
-pub use engines::Engine;
+pub use client::{EngineConfig, SearchClient, SearchOptions};
+pub use engines::{Engine, EngineCapabilities};
 pub use result::{SearchItem, SearchMode, SearchResult};
 
 pub mod prelude {
-    pub use crate::{Engine, SearchClient, SearchItem, SearchMode, SearchOptions, SearchResult};
+    pub use crate::{
+        Engine, EngineCapabilities, EngineConfig, SearchClient, SearchItem, SearchMode,
+        SearchOptions, SearchResult,
+    };
 }

@@ -11,12 +11,15 @@ use anyhow::{Result, anyhow};
 use serde::{Deserialize, Serialize};
 
 use crate::{
-    client::SearchOptions,
+    client::{EngineConfig, SearchOptions},
+    engines::Engine,
     engines_impl::EngineOutput,
     result::{SearchItem, SearchMode},
 };
 
-const ENDPOINT: &str = "https://api.bochaai.com/v1/web-search";
+/// Search path appended to the (configurable) base URL.
+pub const SEARCH_PATH: &str = "/v1/web-search";
+const KEY_HINT: &str = "Get one at https://open.bochaai.com/";
 
 /// Search with the 博查 (Bocha) Web Search API.
 ///
@@ -28,9 +31,10 @@ pub async fn search(
     http: &reqwest::Client,
     query: &str,
     opts: &SearchOptions,
+    cfg: &EngineConfig,
 ) -> Result<EngineOutput> {
-    let api_key = std::env::var("BOCHA_API_KEY")
-        .map_err(|_| anyhow!("BOCHA_API_KEY not set. Get one at https://open.bochaai.com/"))?;
+    let api_key = cfg.resolve_api_key(&Engine::Bocha, KEY_HINT)?;
+    let endpoint = format!("{}{SEARCH_PATH}", cfg.resolve_base_url(&Engine::Bocha)?);
 
     let count = opts.limit.unwrap_or(10).clamp(1, 50);
 
@@ -43,7 +47,7 @@ pub async fn search(
     };
 
     let resp = http
-        .post(ENDPOINT)
+        .post(&endpoint)
         .bearer_auth(&api_key)
         .header("Content-Type", "application/json")
         .json(&body)
@@ -81,6 +85,7 @@ pub async fn search(
                 url: r.url,
                 snippet,
                 content: None,
+                ..Default::default()
             }
         })
         .collect();
@@ -163,6 +168,7 @@ mod tests {
                     url: r.url,
                     snippet,
                     content: None,
+                    ..Default::default()
                 }
             })
             .collect();

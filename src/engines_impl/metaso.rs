@@ -30,12 +30,15 @@ use anyhow::{Result, anyhow};
 use serde::Serialize;
 
 use crate::{
-    client::SearchOptions,
+    client::{EngineConfig, SearchOptions},
+    engines::Engine,
     engines_impl::EngineOutput,
     result::{SearchItem, SearchMode},
 };
 
-const ENDPOINT: &str = "https://metaso.cn/api/v1/search";
+/// Search path appended to the (configurable) base URL.
+pub const SEARCH_PATH: &str = "/api/v1/search";
+const KEY_HINT: &str = "Get one at https://metaso.cn/search-api/api-keys";
 
 /// Default search scope. Metaso accepts at least `webpage`, `image`, and
 /// (per the playground UI) academic/document scopes. Override with
@@ -52,10 +55,10 @@ pub async fn search(
     http: &reqwest::Client,
     query: &str,
     opts: &SearchOptions,
+    cfg: &EngineConfig,
 ) -> Result<EngineOutput> {
-    let api_key = std::env::var("METASO_API_KEY").map_err(|_| {
-        anyhow!("METASO_API_KEY not set. Get one at https://metaso.cn/search-api/api-keys")
-    })?;
+    let api_key = cfg.resolve_api_key(&Engine::Metaso, KEY_HINT)?;
+    let endpoint = format!("{}{SEARCH_PATH}", cfg.resolve_base_url(&Engine::Metaso)?);
 
     let scope = std::env::var("METASO_SCOPE").unwrap_or_else(|_| DEFAULT_SCOPE.to_string());
     let size = opts.limit.unwrap_or(10).clamp(1, 50);
@@ -70,7 +73,7 @@ pub async fn search(
     };
 
     let resp = http
-        .post(ENDPOINT)
+        .post(&endpoint)
         .bearer_auth(&api_key)
         .header("Accept", "application/json")
         .json(&body)
@@ -176,6 +179,7 @@ fn parse_result(obj: &serde_json::Value) -> Option<SearchItem> {
         url,
         snippet,
         content: None,
+        ..Default::default()
     })
 }
 

@@ -9,12 +9,15 @@ use anyhow::{Result, anyhow};
 use serde::Deserialize;
 
 use crate::{
-    client::SearchOptions,
+    client::{EngineConfig, SearchOptions},
+    engines::Engine,
     engines_impl::EngineOutput,
     result::{SearchItem, SearchMode},
 };
 
-const ENDPOINT: &str = "https://api.search.brave.com/res/v1/web/search";
+/// Search path appended to the (configurable) base URL.
+pub const SEARCH_PATH: &str = "/res/v1/web/search";
+const KEY_HINT: &str = "Get one at https://brave.com/search/api/";
 
 /// Search with the Brave Search API.
 ///
@@ -26,15 +29,15 @@ pub async fn search(
     http: &reqwest::Client,
     query: &str,
     opts: &SearchOptions,
+    cfg: &EngineConfig,
 ) -> Result<EngineOutput> {
-    let api_key = std::env::var("BRAVE_SEARCH_API_KEY").map_err(|_| {
-        anyhow!("BRAVE_SEARCH_API_KEY not set. Get one at https://brave.com/search/api/")
-    })?;
+    let api_key = cfg.resolve_api_key(&Engine::Brave, KEY_HINT)?;
+    let endpoint = format!("{}{SEARCH_PATH}", cfg.resolve_base_url(&Engine::Brave)?);
 
     let count = opts.limit.unwrap_or(10).min(20);
 
     let resp = http
-        .get(ENDPOINT)
+        .get(&endpoint)
         .header("X-Subscription-Token", &api_key)
         .header("Accept", "application/json")
         .header("Accept-Encoding", "gzip")
@@ -68,6 +71,7 @@ pub async fn search(
             url: r.url,
             snippet: r.description.filter(|s| !s.is_empty()),
             content: None,
+            ..Default::default()
         })
         .collect();
 
@@ -123,6 +127,7 @@ mod tests {
                 url: r.url,
                 snippet: r.description.filter(|s| !s.is_empty()),
                 content: None,
+                ..Default::default()
             })
             .collect();
         assert_eq!(items.len(), 2);

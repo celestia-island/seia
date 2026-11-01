@@ -1,12 +1,14 @@
 //! Engine implementations — one module per backend.
 
 pub mod arxiv;
+pub mod baidu;
 pub mod bing;
 pub mod bocha;
 pub mod brave;
 pub mod core;
 pub mod crossref;
 pub mod custom;
+pub mod deepseek;
 pub mod doaj;
 pub mod duckduckgo;
 pub mod metaso;

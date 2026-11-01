@@ -91,6 +91,7 @@ fn parse_ddg_html(html: &str) -> Vec<SearchItem> {
                 url,
                 snippet,
                 content: None,
+                ..Default::default()
             });
         }
     }
@@ -115,6 +116,7 @@ fn parse_ddg_html(html: &str) -> Vec<SearchItem> {
                 url,
                 snippet: None,
                 content: None,
+                ..Default::default()
             });
         }
     }

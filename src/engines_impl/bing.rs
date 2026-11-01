@@ -8,14 +8,15 @@ use anyhow::{Result, anyhow};
 use serde::Deserialize;
 
 use crate::{
-    client::SearchOptions,
+    client::{EngineConfig, SearchOptions},
+    engines::Engine,
     engines_impl::EngineOutput,
     result::{SearchItem, SearchMode},
 };
 
-/// Default Bing Search v7 endpoint. Override with `BING_SEARCH_ENDPOINT` for
-/// sovereign clouds or self-hosted proxies.
-const DEFAULT_ENDPOINT: &str = "https://api.bing.microsoft.com";
+/// Search path appended to the (configurable) base URL.
+pub const SEARCH_PATH: &str = "/v7.0/search";
+const KEY_HINT: &str = "Get one at the Azure Portal (Bing Search v7).";
 
 /// Search with the Bing Web Search API v7.
 ///
@@ -27,20 +28,14 @@ pub async fn search(
     http: &reqwest::Client,
     query: &str,
     opts: &SearchOptions,
+    cfg: &EngineConfig,
 ) -> Result<EngineOutput> {
-    let api_key = std::env::var("BING_SEARCH_API_KEY").map_err(|_| {
-        anyhow!("BING_SEARCH_API_KEY not set. Get one at the Azure Portal (Bing Search v7).")
-    })?;
-
-    let endpoint = std::env::var("BING_SEARCH_ENDPOINT")
-        .unwrap_or_else(|_| DEFAULT_ENDPOINT.to_string())
-        .trim_end_matches('/')
-        .to_string();
+    let api_key = cfg.resolve_api_key(&Engine::Bing, KEY_HINT)?;
+    let endpoint = cfg.resolve_base_url(&Engine::Bing)?;
 
     let count = opts.limit.unwrap_or(10).min(50);
     let url = format!(
-        "{}/v7.0/search?q={}&count={}&responseFilter=Webpages",
-        endpoint,
+        "{endpoint}{SEARCH_PATH}?q={}&count={}&responseFilter=Webpages",
         urlencode(query),
         count
     );
@@ -72,6 +67,7 @@ pub async fn search(
             url: r.url,
             snippet: Some(r.snippet).filter(|s| !s.is_empty()),
             content: None,
+            ..Default::default()
         })
         .collect();
 
@@ -155,6 +151,7 @@ mod tests {
                 url: r.url,
                 snippet: Some(r.snippet).filter(|s| !s.is_empty()),
                 content: None,
+                ..Default::default()
             })
             .collect();
         assert_eq!(items.len(), 2);

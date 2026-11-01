@@ -39,6 +39,7 @@ pub async fn search(
                 url,
                 snippet,
                 content: None,
+                ..Default::default()
             }
         })
         .collect();

@@ -40,6 +40,7 @@ pub async fn search(
             url: w.id,
             snippet: w.abstract_inverted_index.map(|a| invert_abstract(&a)),
             content: None,
+            ..Default::default()
         })
         .collect();
 

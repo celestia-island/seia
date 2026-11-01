@@ -38,14 +38,27 @@ enum Command {
     #[command(name = "engines-reset")]
     EnginesReset,
 
+    /// Run the HTTP search service (`seia_search_v1` protocol)
+    #[cfg(feature = "serve")]
+    Serve {
+        /// Bind address (default: $SEIA_BIND or 127.0.0.1:3013)
+        #[arg(long)]
+        bind: Option<String>,
+    },
+
     #[cfg(feature = "mcp")]
     Mcp,
 }
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
+    // Default to `info` when RUST_LOG is unset: the service's served/failed
+    // search lines are INFO, and dropping them silently made the acceptance
+    // evidence unobservable.
     tracing_subscriber::fmt()
-        .with_env_filter(EnvFilter::from_default_env())
+        .with_env_filter(
+            EnvFilter::try_from_default_env().unwrap_or_else(|_| EnvFilter::new("info")),
+        )
         .init();
 
     let cli = Cli::parse();
@@ -145,6 +158,11 @@ async fn main() -> anyhow::Result<()> {
             Ok(dir) => println!("Reset built-in engine configs in {}", dir.display()),
             Err(e) => eprintln!("Error: {e}"),
         },
+
+        #[cfg(feature = "serve")]
+        Command::Serve { bind } => {
+            seia::serve::run(bind).await?;
+        }
 
         #[cfg(feature = "mcp")]
         Command::Mcp => {

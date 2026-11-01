@@ -37,6 +37,7 @@ pub async fn search(
                 .unwrap_or_else(|| format!("https://www.semanticscholar.org/paper/{}", p.paper_id)),
             snippet: p.r#abstract,
             content: None,
+            ..Default::default()
         })
         .collect();
 

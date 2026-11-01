@@ -41,6 +41,7 @@ pub async fn search(
                 .unwrap_or_default(),
             snippet: a.bibjson.r#abstract.or_else(|| a.bibjson.keywords.clone()),
             content: None,
+            ..Default::default()
         })
         .collect();
 

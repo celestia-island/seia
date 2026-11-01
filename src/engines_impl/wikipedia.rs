@@ -40,6 +40,7 @@ pub async fn search(
             url,
             snippet: Some(strip_wiki_markup(&hit.snippet)),
             content: None,
+            ..Default::default()
         });
     }
 

@@ -46,6 +46,11 @@ pub struct CustomEngineDef {
     /// - `{{query}}` — URL-encoded search query
     /// - `{{limit}}` — max results requested
     /// - `${ENV_VAR}` — environment variable substitution
+    ///
+    /// Defaults to empty for Rust-backed engines (whose TOML entry is metadata
+    /// only and carries no endpoint), so one missing `url` can no longer make
+    /// the whole embedded roster fail to load.
+    #[serde(default)]
     pub url: String,
 
     /// For GET requests: the query-string parameter name for the search term.
@@ -247,6 +252,26 @@ impl EngineRegistry {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn embedded_roster_loads_completely() {
+        // Rust-backed engines carry metadata-only TOML entries without a `url`;
+        // one missing required field must not fail the whole embedded roster
+        // (that used to silently empty `seia engines` and disable custom
+        // engines, because load() returned Err).
+        let builtin: ConfigFile =
+            toml::from_str(BUILTIN_TOML).expect("embedded builtin_engines.toml must parse");
+        assert!(
+            builtin.engines.len() >= 18,
+            "unexpected roster size: {}",
+            builtin.engines.len()
+        );
+        for name in ["deepseek", "baidu", "tavily", "duckduckgo", "pubmed"] {
+            assert!(builtin.engines.contains_key(name), "missing engine {name}");
+        }
+        assert!(builtin.engines["deepseek"].builtin);
+        assert!(builtin.engines["deepseek"].help.is_some());
+    }
 
     #[test]
     fn parse_minimal_engine_def() {
