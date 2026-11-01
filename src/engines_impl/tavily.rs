@@ -13,7 +13,7 @@ use crate::{
 };
 
 /// Search path appended to the (configurable) base URL.
-const SEARCH_PATH: &str = "/search";
+pub const SEARCH_PATH: &str = "/search";
 const KEY_HINT: &str = "Get one at https://tavily.com";
 
 /// Search with the Tavily Search API.

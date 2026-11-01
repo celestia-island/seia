@@ -52,8 +52,13 @@ enum Command {
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
+    // Default to `info` when RUST_LOG is unset: the service's served/failed
+    // search lines are INFO, and dropping them silently made the acceptance
+    // evidence unobservable.
     tracing_subscriber::fmt()
-        .with_env_filter(EnvFilter::from_default_env())
+        .with_env_filter(
+            EnvFilter::try_from_default_env().unwrap_or_else(|_| EnvFilter::new("info")),
+        )
         .init();
 
     let cli = Cli::parse();

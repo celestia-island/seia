@@ -27,7 +27,7 @@ use crate::{
 /// Wire protocol identifier for the `seia_search_v1` chain protocol.
 pub const PROTOCOL: &str = "baidu_ai_search_v1";
 /// Path appended to the (configurable) base URL.
-const SEARCH_PATH: &str = "/v2/ai_search/web_search";
+pub const SEARCH_PATH: &str = "/v2/ai_search/web_search";
 const KEY_HINT: &str = "Get one at https://console.bce.baidu.com/qianfan";
 /// Documented upper bound for the user message content.
 pub const MAX_QUERY_CHARS: usize = 72;

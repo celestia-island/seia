@@ -162,6 +162,7 @@ unauthenticated liveness probe.
 | `SEIA_BIND` | `127.0.0.1:3013` | Listen address (`--bind` overrides) |
 | `SEIA_TOKEN` | unset | When set, `/v1/*` requires `Authorization: Bearer <token>` |
 | `SEIA_DEFAULT_CHAIN` | `deepseek,baidu,duckduckgo,wikipedia` | Chain used when a request omits `chain` |
+| `RUST_LOG` | `info` | Log filter (the `seia_search served` / `search_failed` lines are INFO) |
 
 Chain entries carry plaintext credentials by design (caller → seia over
 loopback); seia never logs, echoes or serializes the caller-supplied `api_key`,

@@ -18,7 +18,7 @@ use crate::{
 };
 
 /// Search path appended to the (configurable) base URL.
-const SEARCH_PATH: &str = "/v1/web-search";
+pub const SEARCH_PATH: &str = "/v1/web-search";
 const KEY_HINT: &str = "Get one at https://open.bochaai.com/";
 
 /// Search with the 博查 (Bocha) Web Search API.

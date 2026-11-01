@@ -128,6 +128,12 @@ impl Engine {
     }
 
     /// Public default base URL of the engine's HTTP API (no trailing slash).
+    ///
+    /// **Host-only**: the resource path belongs to the engine's `SEARCH_PATH`
+    /// constant. Keep this in lockstep with provider-registry
+    /// `search/<provider>/default.toml` (`[entrypoint.api] base_url`); the
+    /// `tests/engines_endpoints.rs` regression test pins the concatenation.
+    ///
     /// `None` when the host is only known at runtime (e.g. SearXNG, custom).
     #[must_use]
     pub const fn default_base_url(&self) -> Option<&'static str> {
@@ -137,11 +143,11 @@ impl Engine {
             Self::Duckduckgo => Some("https://html.duckduckgo.com"),
             Self::Wikipedia => Some("https://en.wikipedia.org"),
             Self::Tavily => Some("https://api.tavily.com"),
-            Self::Bing => Some("https://api.bing.microsoft.com/v7.0"),
-            Self::Brave => Some("https://api.search.brave.com/res/v1"),
-            Self::Zhipu => Some("https://open.bigmodel.cn/api/paas/v4"),
+            Self::Bing => Some("https://api.bing.microsoft.com"),
+            Self::Brave => Some("https://api.search.brave.com"),
+            Self::Zhipu => Some("https://open.bigmodel.cn"),
             Self::Bocha => Some("https://api.bochaai.com"),
-            Self::Metaso => Some("https://metaso.cn/api/v1"),
+            Self::Metaso => Some("https://metaso.cn"),
             Self::SemanticScholar => Some("https://api.semanticscholar.org"),
             Self::OpenAlex => Some("https://api.openalex.org"),
             Self::Arxiv => Some("http://export.arxiv.org"),

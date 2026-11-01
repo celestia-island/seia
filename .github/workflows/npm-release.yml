@@ -116,14 +116,14 @@ jobs:
           pip install ziglang
           cargo install cargo-zigbuild --locked
 
-      # Build with the mcp feature so `seia mcp` ships in the binary.
+      # Build with all features so `seia mcp` and `seia serve` ship in the binary.
       - name: Build (release)
         shell: bash
         run: |
           if [ "${{ runner.os }}" = "Linux" ]; then
-            cargo zigbuild --release --features mcp --target ${{ matrix.target }}
+            cargo zigbuild --release --all-features --target ${{ matrix.target }}
           else
-            cargo build --release --features mcp --target ${{ matrix.target }}
+            cargo build --release --all-features --target ${{ matrix.target }}
           fi
 
       - name: Stage subpackage

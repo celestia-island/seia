@@ -20,7 +20,7 @@ use crate::{
 };
 
 /// Search path appended to the (configurable) base URL.
-const SEARCH_PATH: &str = "/api/paas/v4/web_search";
+pub const SEARCH_PATH: &str = "/api/paas/v4/web_search";
 const KEY_HINT: &str = "Get one at https://bigmodel.cn/";
 
 /// Which backing search engine Zhipu should route the query to.

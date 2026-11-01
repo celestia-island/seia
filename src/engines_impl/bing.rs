@@ -15,7 +15,7 @@ use crate::{
 };
 
 /// Search path appended to the (configurable) base URL.
-const SEARCH_PATH: &str = "/v7.0/search";
+pub const SEARCH_PATH: &str = "/v7.0/search";
 const KEY_HINT: &str = "Get one at the Azure Portal (Bing Search v7).";
 
 /// Search with the Bing Web Search API v7.

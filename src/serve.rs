@@ -39,6 +39,7 @@ use serde_json::{Value, json};
 
 use crate::{
     client::{EngineConfig, SearchClient, SearchOptions},
+    config::EngineRegistry,
     engines::Engine,
     result::SearchItem,
     utils::truncate,
@@ -193,7 +194,7 @@ struct ChainFailure {
 /// server loop fails.
 pub async fn run(bind_override: Option<String>) -> Result<()> {
     let bind = resolve_bind(bind_override);
-    let cfg = Arc::new(ServeConfig::from_env(SearchClient::new()));
+    let cfg = Arc::new(ServeConfig::from_env(load_client()));
     let listener = tokio::net::TcpListener::bind(&bind)
         .await
         .with_context(|| format!("seia serve: cannot bind {bind}"))?;
@@ -218,6 +219,32 @@ fn resolve_bind(override_bind: Option<String>) -> String {
                 .filter(|bind| !bind.is_empty())
         })
         .unwrap_or_else(|| DEFAULT_BIND.to_string())
+}
+
+/// Build the service's search client.
+///
+/// Custom engines are loaded from the same config paths as `seia search` and
+/// `seia mcp` (`~/.seia/engines/*.toml`, `./seia.toml`), so chain entries using
+/// the `seia_custom_v0` protocol resolve instead of failing as unknown.
+fn load_client() -> SearchClient {
+    match EngineRegistry::load() {
+        Ok(registry) => build_client(registry),
+        Err(err) => {
+            // Never fail startup over an unreadable user config, but make the
+            // degraded state visible: chain entries for custom engines will
+            // otherwise fail as unknown providers.
+            tracing::warn!(
+                error = %err,
+                "custom engine registry unavailable; serving built-in engines only"
+            );
+            build_client(EngineRegistry::default())
+        }
+    }
+}
+
+/// Build a search client over an explicit engine registry (test seam).
+fn build_client(registry: EngineRegistry) -> SearchClient {
+    SearchClient::new().with_registry(registry)
 }
 
 /// Build the axum router (exposed for tests).
@@ -952,6 +979,30 @@ mod tests {
         assert_eq!(wikipedia["needs_key"], false);
         assert!(wikipedia["env_var"].is_null());
 
+        // Default base URLs are host-only: the endpoint path lives in the
+        // protocol constant (regression guard for the doubled-prefix 404s).
+        assert_eq!(
+            by_id("bing")["default_base_url"],
+            "https://api.bing.microsoft.com"
+        );
+        assert_eq!(
+            by_id("brave")["default_base_url"],
+            "https://api.search.brave.com"
+        );
+        assert_eq!(
+            by_id("zhipu")["default_base_url"],
+            "https://open.bigmodel.cn"
+        );
+        assert_eq!(by_id("metaso")["default_base_url"], "https://metaso.cn");
+        assert_eq!(
+            by_id("tavily")["default_base_url"],
+            "https://api.tavily.com"
+        );
+        assert_eq!(
+            by_id("bocha")["default_base_url"],
+            "https://api.bochaai.com"
+        );
+
         // Registry-declared protocol names are used verbatim.
         assert_eq!(by_id("tavily")["protocol"], "tavily_search_v1");
         assert_eq!(by_id("brave")["protocol"], "brave_search_v1");
@@ -995,6 +1046,43 @@ mod tests {
     }
 
     // ── unit tests: credential hygiene & protocol resolution ──
+
+    #[test]
+    fn serve_client_loads_the_custom_engine_registry() {
+        // The service path must not silently run on an empty registry: custom
+        // engines (`seia_custom_v0`) have to resolve like they do for the CLI
+        // and MCP paths.
+        let mut registry = EngineRegistry::default();
+        registry.engines.insert(
+            "custom-test".to_string(),
+            crate::config::CustomEngineDef {
+                label: "Custom Test".to_string(),
+                method: "GET".to_string(),
+                url: "https://example.org/search".to_string(),
+                ..crate::config::CustomEngineDef::default()
+            },
+        );
+
+        let client = build_client(registry);
+        assert_eq!(client.registry().names(), vec!["custom-test"]);
+
+        let entry = ChainEntry {
+            provider: "custom-test".to_string(),
+            protocol: Some(Engine::CUSTOM_PROTOCOL.to_string()),
+            ..ChainEntry::default()
+        };
+        let (engine, protocol) =
+            resolve_entry(&entry, &client).expect("custom engine must resolve in serve");
+        assert_eq!(engine, Engine::Custom("custom-test".to_string()));
+        assert_eq!(protocol, "seia_custom_v0");
+
+        // `load_client()` is the wiring used by `run()`; it must be the same
+        // code path (build_client over EngineRegistry::load()).
+        assert_eq!(
+            load_client().registry().names().len(),
+            EngineRegistry::load().unwrap_or_default().names().len()
+        );
+    }
 
     #[test]
     fn chain_entry_debug_and_json_redact_api_key() {

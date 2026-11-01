@@ -16,7 +16,7 @@ use crate::{
 };
 
 /// Search path appended to the (configurable) base URL.
-const SEARCH_PATH: &str = "/res/v1/web/search";
+pub const SEARCH_PATH: &str = "/res/v1/web/search";
 const KEY_HINT: &str = "Get one at https://brave.com/search/api/";
 
 /// Search with the Brave Search API.

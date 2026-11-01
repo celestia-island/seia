@@ -37,7 +37,7 @@ use crate::{
 };
 
 /// Search path appended to the (configurable) base URL.
-const SEARCH_PATH: &str = "/api/v1/search";
+pub const SEARCH_PATH: &str = "/api/v1/search";
 const KEY_HINT: &str = "Get one at https://metaso.cn/search-api/api-keys";
 
 /// Default search scope. Metaso accepts at least `webpage`, `image`, and

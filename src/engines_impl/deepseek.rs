@@ -24,7 +24,7 @@ use crate::{
 /// Wire protocol identifier for the `seia_search_v1` chain protocol.
 pub const PROTOCOL: &str = "deepseek_search_v1";
 /// Path appended to the (configurable) base URL.
-const SEARCH_PATH: &str = "/v1/tools/search";
+pub const SEARCH_PATH: &str = "/v1/tools/search";
 const KEY_HINT: &str = "Get one at https://platform.deepseek.com";
 
 /// Search with the DeepSeek Search API.

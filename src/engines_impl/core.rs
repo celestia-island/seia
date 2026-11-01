@@ -14,6 +14,8 @@ use crate::{
     result::{SearchItem, SearchMode},
 };
 
+/// Search path appended to the (configurable) base URL.
+pub const SEARCH_PATH: &str = "/v3/search/works";
 const KEY_HINT: &str = "Get one at https://core.ac.uk/services/api";
 
 pub async fn search(
@@ -27,7 +29,7 @@ pub async fn search(
     let limit = opts.limit.unwrap_or(10).min(100);
     let base_url = cfg.resolve_base_url(&Engine::Core)?;
     let url = format!(
-        "{base_url}/v3/search/works?q={}&limit={}&offset=0",
+        "{base_url}{SEARCH_PATH}?q={}&limit={}&offset=0",
         crate::utils::urlencode_query(query),
         limit
     );
