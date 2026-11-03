@@ -131,7 +131,7 @@ help = "Open-access papers (free key at core.ac.uk)"
 label = "DeepSeek Search"
 method = "_builtin_deepseek"
 builtin = true
-help = "DeepSeek Search API (DEEPSEEK_API_KEY)"
+help = "DeepSeek Search API (DEEPSEEK_API_KEY) — recommended: standardized AI-search shape"
 
 [engines.baidu]
 label = "Baidu AI Search"
