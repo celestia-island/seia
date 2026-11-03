@@ -126,7 +126,7 @@ async fn main() -> anyhow::Result<()> {
             println!("Built-in ({}):", builtin.len());
             for (name, def) in &builtin {
                 let engine = Engine::from_name(name);
-                let key = engine.and_then(|e| e.api_key_env());
+                let key = engine.as_ref().and_then(|e| e.api_key_env());
                 let key_note = if key.is_some() { " [key]" } else { "" };
                 // `*` marks a recommended engine (see Engine::recommended).
                 let rec = engine
