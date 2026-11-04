@@ -352,6 +352,7 @@ async fn engines_handler(State(cfg): State<Arc<ServeConfig>>, headers: HeaderMap
                 "env_var": engine.api_key_env(),
                 "default_base_url": engine.default_base_url(),
                 "capabilities": engine.capabilities(),
+                "recommended": engine.recommended(),
             })
         })
         .collect();

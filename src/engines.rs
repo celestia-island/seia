@@ -227,6 +227,18 @@ impl Engine {
         self.api_key_env().is_some()
     }
 
+    /// Whether this engine is a recommended default for new setups.
+    ///
+    /// `recommended` marks the engines a fresh deployment should wire up
+    /// first: the standardized AI-search providers whose result shape the
+    /// normalized `SearchItem` model follows. Surfaced by `seia engines`
+    /// (a `*` marker) and the `/v1/engines` roster so arona's search
+    /// admin can offer one-click registration for exactly these.
+    #[must_use]
+    pub const fn recommended(&self) -> bool {
+        matches!(self, Self::Deepseek)
+    }
+
     /// Parse engine name to variant. Returns `None` for unknown names
     /// (use `Engine::Custom(name)` instead).
     #[must_use]
@@ -316,5 +328,15 @@ mod tests {
         assert!(Engine::Deepseek.capabilities().content);
         assert!(Engine::Deepseek.capabilities().site_filter);
         assert!(!Engine::Duckduckgo.capabilities().content);
+    }
+
+    #[test]
+    fn recommended_marks_the_standardized_ai_search_engines() {
+        assert!(Engine::Deepseek.recommended());
+        // Everything else stays unmarked — the list is deliberate, not
+        // a default-on for keyed engines.
+        for e in Engine::BUILTIN.iter().filter(|e| **e != Engine::Deepseek) {
+            assert!(!e.recommended(), "{} must not be recommended", e.as_str());
+        }
     }
 }

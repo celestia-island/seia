@@ -125,12 +125,18 @@ async fn main() -> anyhow::Result<()> {
 
             println!("Built-in ({}):", builtin.len());
             for (name, def) in &builtin {
-                let key = Engine::from_name(name).and_then(|e| e.api_key_env());
+                let engine = Engine::from_name(name);
+                let key = engine.as_ref().and_then(|e| e.api_key_env());
                 let key_note = if key.is_some() { " [key]" } else { "" };
+                // `*` marks a recommended engine (see Engine::recommended).
+                let rec = engine
+                    .map(|e| if e.recommended() { " *" } else { "" })
+                    .unwrap_or("");
                 println!(
-                    "  {name:<22} — {}{}",
+                    "  {name:<22} — {}{}{}",
                     def.help.as_deref().unwrap_or(&def.label),
-                    key_note
+                    key_note,
+                    rec
                 );
             }
             if !custom.is_empty() {
